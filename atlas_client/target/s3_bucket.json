@@ -1,0 +1,23 @@
+{
+  "entity" : {
+    "status" : "ACTIVE",
+     "createdBy" : "admin",
+      "updatedBy" : "admin",
+      "createTime": 1599473523092,
+      "updateTime": 1599473523092,
+    "version" : 0,
+    "typeName": "aws_s3_bucket",
+      "attributes": {
+        "owner": "pengfei",
+        "createtime": 1599473523092,
+        "qualifiedName": "s3://minio.lab.sspcloud.fr/pengfei",
+        "encryptionType": "none",
+        "description": "added by minio hook",
+        "partner": "none",
+        "domain": "minio.lab.sspcloud.fr",
+        "isEncrypted": false,
+        "name": "pengfei",
+        "region": "none"
+      }
+  }
+}

@@ -1,0 +1,32 @@
+from atlas_client.client import Atlas
+from atlas_client.entity_search.EntityFinder import EntityFinder
+
+atlas_prod_hostname = "https://atlas.lab.sspcloud.fr"
+atlas_prod_port = 443
+oidc_token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJhUHNCSzhYRC1od1gtMWJFbjdZZDRLS0tWS0hYRy03RHg3STZDaVZZWUtRIn0.eyJleHAiOjE2MDMyMjE3MTcsImlhdCI6MTYwMzE4MjI4NywiYXV0aF90aW1lIjoxNjAzMTc4NTE3LCJqdGkiOiJhYWY2NDNjZC0wZmU1LTQ5ZWUtYjlhYi0wMzZmZjUyMWNjZWEiLCJpc3MiOiJodHRwczovL2F1dGgubGFiLnNzcGNsb3VkLmZyL2F1dGgvcmVhbG1zL3NzcGNsb3VkIiwiYXVkIjpbIm9ueXhpYSIsImFjY291bnQiXSwic3ViIjoiNDczNDkxMjgtNGE0Yy00MjI2LWE1YjEtNjgwODAxYWY1YTJiIiwidHlwIjoiQmVhcmVyIiwiYXpwIjoib255eGlhIiwibm9uY2UiOiI2YmU3NmIwMy05NGIwLTQwZjYtODNlNS0wNjU5NWY5OWE2MjciLCJzZXNzaW9uX3N0YXRlIjoiNjdiM2Q4OGUtOThiZS00MmQwLTkxYmMtMDkzZDFlMmEwNTkyIiwiYWNyIjoiMCIsImFsbG93ZWQtb3JpZ2lucyI6WyIqIl0sInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJBdGxhc19yb2xlX2FkbWluIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJuYW1lIjoiUGVuZ2ZlaSBMaXUiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJwZW5nZmVpIiwiZ2l2ZW5fbmFtZSI6IlBlbmdmZWkiLCJmYW1pbHlfbmFtZSI6IkxpdSIsImVtYWlsIjoibGl1LnBlbmdmZWlAaG90bWFpbC5mciJ9.lLNeJ8vyi8AD6evIS2UnbH2UdkVmI7rVtX5Ah-38_iNL2-pQ6-AeynU8jrHlxxpV_I0SEAC8GkADkuGlQFMfR5g8NMFIC9GSD3rbDfspPxM7f-GBUHY0dMgeqJxtRTNePVnEsPox4bP5xttIIAjCrfEjwDHUbCuldcm82HAsbDJwGu5GCbQKf6CNiyZEXWw-u-ncZbHUxO3eiZ4H0RNHy93WXWEpPZ6Il96f-Pn4Muef5yPraoDliarCoSQPylTK61lKrQyzdOLUxb23lfJEgQzb6bUJXtUiu8mQZpM4Jipl2PUgIKqJ7rAuRgACvMRDskQgXUewA3PUkh-YpW2Cyg"
+
+atlas_hostname = "localhost"
+atlas_port = 21000
+atlas_login = "admin"
+atlas_pwd = "admin"
+
+atlas_prod_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
+# atlas_client = Atlas(atlas_hostname, atlas_port, atlas_login, atlas_pwd)
+
+finder = EntityFinder(atlas_prod_client)
+# finder.search_by_attribute("aws_s3_bucket", "owner", "foobar")
+
+search_result = finder.search_full_text("aws_s3_bucket", "insee")
+
+print(search_result)
+EntityFinder.show_search_results(search_result)
+entity_number = EntityFinder.get_entity_number(search_result)
+print("Find " + str(entity_number) + " result in total")
+
+guid_list, name_list = EntityFinder.get_result_entity_guid_list(search_result)
+
+for guid in guid_list:
+    print("result entity guid: " + guid)
+
+for name in name_list:
+    print("result name: " + name)
