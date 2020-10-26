@@ -1,4 +1,5 @@
-jinja2~=3.0.0a1
-six==1.15.0
-setuptools~=50.3.0
-s3fs==0.5.1
+jinja2>=2.11.1
+six>=1.14.0
+Click>=6.0
+requests>=2.18.4
+

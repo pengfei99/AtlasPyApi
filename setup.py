@@ -3,7 +3,9 @@
 
 import os
 import sys
+
 import setuptools
+
 from atlas_client import __version__ as version
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -27,7 +29,8 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://git.lab.sspcloud.fr/pengfei/atlaspyapi",
-    packages=setuptools.find_packages(include=['atlas_client', 'atlas_client.entity_search']),
+    # we need to indicate excitement which package will be published, otherwise import will raise module name not found
+    packages=setuptools.find_packages(include=['atlas_client', 'atlas_client.*']),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
