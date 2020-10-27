@@ -14,6 +14,7 @@ import os
 import time
 from configparser import SafeConfigParser
 import jinja2
+import pkg_resources
 
 
 # get current time

@@ -11,8 +11,8 @@
 #    under the License.
 
 import json
+
 from atlas_client.client import Atlas
-from atlas_client.definition import TARGET_FOLDER
 from atlas_client.entity_management.EntityManager import EntityManager
 from atlas_client.entity_source_generation.S3ObjectEntityGenerator import S3ObjectEntityGenerator
 
@@ -22,17 +22,17 @@ class S3ObjectManager(EntityManager):
         super().__init__(atlas_client)
 
     def create_entity(self, name: str, qualified_name: str, ps_dir_qualified_name: str, object_prefix: str,
-                      data_type: str, owner: str, description: str,**kwargs) -> None:
+                      data_type: str, owner: str, description: str, **kwargs) -> bool:
         s3_object_json_source = S3ObjectEntityGenerator.generate_s3_object_entity_json_source(name, qualified_name,
                                                                                               ps_dir_qualified_name,
                                                                                               object_prefix, data_type,
                                                                                               owner, description,
                                                                                               **kwargs)
-        target_file = TARGET_FOLDER + "/s3_object.json"
-        f = open(target_file, "w")
-        f.write(s3_object_json_source)
-        f.close()
-        with open(target_file, "r") as json_file:
-            s3_object_json_source = json.load(json_file)
-            print(s3_object_json_source)
-        self.client.entity_post.create(data=s3_object_json_source)
+        s3_object_json_source = json.loads(s3_object_json_source)
+        try:
+            self.client.entity_post.create(data=s3_object_json_source)
+        except Exception as e:
+            print("atlas bucket entity creation failed. Origin exception: " + str(e))
+            return False
+        else:
+            return True

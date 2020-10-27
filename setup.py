@@ -37,5 +37,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=requirements,
+    include_package_data=True,
+    package_data={'': ['entity_source_generation/template/*.j2', 'config/*.ini']},
     python_requires='>=3.7',
+
 )
