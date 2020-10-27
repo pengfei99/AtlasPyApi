@@ -1,10 +1,11 @@
-import os
-
 # This is your Project Root
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+import pkg_resources
 
-CONFIG_PATH = ROOT_DIR+ '/config/config.ini'
+ROOT_DIR = pkg_resources.resource_filename('atlas_client', 'config/config.ini')
 
-TEMPLATE_FOLDER_PATH=ROOT_DIR+'/entity_source_generation/template'
+CONFIG_PATH = pkg_resources.resource_filename('atlas_client', 'config/config.ini')
 
-TARGET_FOLDER=ROOT_DIR+'/target'
+TEMPLATE_FOLDER_PATH = pkg_resources.resource_filename('atlas_client',
+                                                       'entity_source_generation/template')
+
+TARGET_FOLDER = pkg_resources.resource_filename('atlas_client', 'target')

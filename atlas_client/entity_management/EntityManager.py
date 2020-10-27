@@ -21,7 +21,7 @@ class EntityManager(ABC):
         self.client = atlas_client
 
     @abstractmethod
-    def create_entity(self, *args, **kwargs) -> None:
+    def create_entity(self, *args, **kwargs) -> bool:
         pass
 
     def get_entity(self, guid: str) -> dict:
