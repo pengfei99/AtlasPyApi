@@ -5,4 +5,7 @@
 atlaspyapi.egg-info/
 build/
 dist/
+atlas_client/test/
+atlas_client/__pycache__/
+.idea/
 

@@ -12,7 +12,6 @@
 
 import json
 from atlas_client.client import Atlas
-from atlas_client.definition import TARGET_FOLDER
 from atlas_client.entity_management.EntityManager import EntityManager
 from atlas_client.entity_source_generation.S3PsDirEntityGenerator import S3PsDirEntityGenerator
 
