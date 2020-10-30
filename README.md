@@ -1,7 +1,6 @@
 # Apache Atlas Client in Python
 
 This python client is only compatible with Apache Atlas REST API v2. 
-Based on the awesome work done by Poullet and verdan in verdan/pyatlasclient
 
 In this repository, we develop a python api to generate atlas entities and import them into atlas instances.
 

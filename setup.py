@@ -23,7 +23,7 @@ setuptools.setup(
     version=version,
     author="Pengfei Liu",
     author_email="pengfei.liu@insee.fr",
-    description="This atlas python api can generate atlas entities and import them into a"
+    description="This atlas python api can generate atlas entities and import them into"
                 "Atlas instances.",
     license='Apache License 2.0',
     long_description=long_description,
