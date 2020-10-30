@@ -62,7 +62,7 @@ class Atlas(object):
     use one of the entry points to start hitting Atlas object collections.
     """
 
-    def __init__(self, host: str, port: str = None, username: str = None, password: str = None, oidc_token: str = None,
+    def __init__(self, host: str, port: int = None, username: str = None, password: str = None, oidc_token: str = None,
                  identifier: str = None, protocol: str = None, validate_ssl: bool = True,
                  timeout=10, max_retries=5, auth=None):
 
