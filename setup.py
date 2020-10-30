@@ -28,7 +28,7 @@ setuptools.setup(
     license='Apache License 2.0',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://git.lab.sspcloud.fr/pengfei/atlaspyapi",
+    url="https://git.lab.sspcloud.fr/pengfei/atlaspyapi_forpypi",
     # we need to indicate excitement which package will be published, otherwise import will raise module name not found
     packages=setuptools.find_packages(include=['atlas_client', 'atlas_client.*']),
     classifiers=[
