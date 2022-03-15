@@ -10,8 +10,6 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import pkg_resources
-
 from atlas_client.definition import CONFIG_PATH
 from atlas_client.definition import TEMPLATE_FOLDER_PATH
 from atlas_client.entity_source_generation.utile import *
@@ -19,7 +17,6 @@ from atlas_client.entity_source_generation.utile import *
 
 class S3BucketEntityGenerator:
     config = init_config(CONFIG_PATH)
-
 
     # get s3_bucket attributes list
     @staticmethod
@@ -51,7 +48,7 @@ class S3BucketEntityGenerator:
         # get s3_bucket default type
         entity_type = S3BucketEntityGenerator.config.get('aws_s3_bucket', 'entity_type')
         # need to be modified
-        template_file_path=TEMPLATE_FOLDER_PATH+"/aws_s3_bucket.json.j2"
+        template_file_path = TEMPLATE_FOLDER_PATH + "/aws_s3_bucket.json.j2"
         # generate default value for optional empty attributes
         creator_id = kwargs.get('creator_id', S3BucketEntityGenerator.config.get(entity_type, 'creator_id'))
         updator_id = kwargs.get('updator_id', S3BucketEntityGenerator.config.get(entity_type, 'updator_id'))
