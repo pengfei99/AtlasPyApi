@@ -33,8 +33,8 @@ class HiveDBManager(EntityManager):
         try:
             self.client.entity_post.create(data=hive_db_json_source)
         except Exception as e:
-            my_logger.error(f"Hive db entity {name} creation failed. {e}")
+            my_logger.error(f"Hive db entity creation failed. {e}")
             return False
         else:
-            my_logger.info(f"Hive db entity {name} is created in {cluster_name}")
+            my_logger.info(f"Hive db {name} is created in {cluster_name}")
             return True
