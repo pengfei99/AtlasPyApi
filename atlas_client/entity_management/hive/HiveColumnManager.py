@@ -14,27 +14,29 @@ import json
 
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.HiveTableEntityGenerator import HiveTableEntityGenerator
+from atlas_client.entity_source_generation.HiveColumnEntityGenerator import HiveColumnEntityGenerator
 from atlas_client.log_manager import get_logger
 
 my_logger = get_logger(__name__)
 my_logger.debug("a debug message")
 
 
-class HiveTableManager(EntityManager):
+class HiveColumnManager(EntityManager):
     def __init__(self, atlas_client: Atlas):
         super().__init__(atlas_client)
 
-    def create_entity(self, table_name: str, db_qualified_name: str, description: str, **kwargs) -> bool:
-        hive_table_json_source = HiveTableEntityGenerator.generate_hive_table_json_source(table_name, db_qualified_name,
-                                                                                          description, **kwargs)
+    def create_entity(self, column_name: str, column_type: str, table_qualified_name: str,
+                      description: str, **kwargs) -> bool:
+        hive_column_json_source = HiveColumnEntityGenerator.generate_hive_column_json_source(column_name, column_type,
+                                                                                             table_qualified_name,
+                                                                                             description, **kwargs)
 
-        hive_table_json_source = json.loads(hive_table_json_source)
+        hive_column_json_source = json.loads(hive_column_json_source)
         try:
-            self.client.entity_post.create(data=hive_table_json_source)
+            self.client.entity_post.create(data=hive_column_json_source)
         except Exception as e:
-            my_logger.error(f"Hive table entity {table_name} creation failed. {e}")
+            my_logger.error(f"Hive column entity {column_name} creation failed. {e}")
             return False
         else:
-            my_logger.info(f"Hive table entity {table_name} is created in db {db_qualified_name}")
+            my_logger.info(f"Hive column entity {column_name} is created in table {table_qualified_name}")
             return True
