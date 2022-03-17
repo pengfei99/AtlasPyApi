@@ -26,8 +26,8 @@ class HiveTableEntityGenerator:
             'name': "Required attribute. "
                     "The name of the hive table, Example, students",
             'qualified_name': "Required attribute. "
-                              " Fully qualified name of the hive db. It must be unique"
-                              " Example, insee.org@insee-data ",
+                              " Fully qualified name of the hive table. It must be unique"
+                              " Example, insee.org@insee-data.students ",
             "db_qualified_name": "Required attribute. "
                                  " The hive db name that contains the hive table. Example, insee.org@insee-data",
             'description': "The description of the entity",
