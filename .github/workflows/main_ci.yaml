@@ -62,15 +62,7 @@ jobs:
       - name: Test with pytest
         run: |
           pytest --import-mode=importlib
-        # build the project to a tarball
-      - name: Build binary wheel and a source tarball
-        run: python setup.py sdist
-       # publish it to the pypi repository
-      - name: Uploads package to PyPI
-        run: python -m twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+    
 
 
 
