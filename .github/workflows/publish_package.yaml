@@ -64,14 +64,13 @@ jobs:
           pytest --import-mode=importlib
         # build the project to a tarball
       - name: Build binary wheel and a source tarball
-        run: python setup.py sdist
+        run: python setup.py sdist bdist_wheel
        # publish it to the pypi repository
-      - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@master
-        with:
-          user: __token__
-          # note the pypi api token is stored at the project's github secrets section
-          password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Uploads package to PyPI
+        run: python3 -m twine upload dist/*
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
 
 
 
