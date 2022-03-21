@@ -65,13 +65,13 @@ jobs:
         # build the project to a tarball
       - name: Build binary wheel and a source tarball
         run: python setup.py sdist
-       # publish it to the test pypi
+       # publish it to the pypi repository
       - name: Publish distribution to PyPI
         uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
         with:
           user: __token__
           # note the pypi api token is stored at the project's github secrets section
-          password: ${{ secrets.PROD_PYPI_API_TOKEN }}
+          password: ${{ secrets.PYPI_API_TOKEN }}
 
 
 
