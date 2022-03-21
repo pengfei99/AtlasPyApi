@@ -12,7 +12,7 @@
 
 import os
 import time
-from configparser import SafeConfigParser
+from configparser import SafeConfigParser, ConfigParser
 import jinja2
 import pkg_resources
 
@@ -25,7 +25,7 @@ def current_milli_time():
 # set up config file
 def init_config(config_file_path: str) -> dict:
     if os.path.isfile(config_file_path):
-        config = SafeConfigParser()
+        config = ConfigParser()
         config.read(config_file_path)
         return config
     else:
