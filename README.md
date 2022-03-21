@@ -38,6 +38,8 @@ for guid in guid_list:
 ```
 
 ### Atlas entities CRUD
+
+#### S3 entities
 ```python
 from atlas_client.entity_management.s3.S3BucketManager import S3BucketManager
 
@@ -66,6 +68,20 @@ s3_bucket_manager.delete_entity(guid)
 
 ``` 
 
+#### Hive entities
+
+```python
+hive_db = HiveDBManager(atlas_client)
+hive_table = HiveTableManager(atlas_client)
+hive_column = HiveColumnManager(atlas_client)
+
+# insert hive tables
+hive_db.create_entity("pengfei-stock", "pengfei.org", "database for my stock market",owner="pliu",location="pengfei.org")
+hive_table.create_entity("favorite", "pengfei.org@pengfei-stock", "favorite stock")
+hive_column.create_entity("stock_id", "int", "pengfei.org@pengfei-stock.favorite", "id of the stock")
+hive_column.create_entity("stock_name", "string", "pengfei.org@pengfei-stock.favorite", "name of the stock")
+
+```
 
 ### Generate atlas entity json file
 If you want to use the Atlas rest api by yourself, we also provide you the support of json file generation
