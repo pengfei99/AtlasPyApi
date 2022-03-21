@@ -15,10 +15,10 @@ import json
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
 from atlas_client.entity_source_generation.HiveColumnEntityGenerator import HiveColumnEntityGenerator
-from atlas_client.log_manager import get_logger
+from atlas_client.log_manager import LogManager
 
-my_logger = get_logger(__name__)
-my_logger.debug("a debug message")
+my_logger = LogManager(__name__).get_logger()
+my_logger.debug("Init hive column manager")
 
 
 class HiveColumnManager(EntityManager):
