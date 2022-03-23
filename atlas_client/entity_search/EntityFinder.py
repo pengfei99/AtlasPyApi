@@ -1,18 +1,25 @@
 from atlas_client.client import Atlas
 
 
+from atlas_client.log_manager import LogManager
+
+LOG = LogManager(__name__).get_logger()
+
+
 class EntityFinder:
     def __init__(self, atlas_client: Atlas):
         self.client = atlas_client
 
     def search_by_attribute(self, type_name: str, attribute_name: str, attribute_value: str) -> dict:
-        params = {'typeName': type_name, 'attrName': attribute_name, 'attrValue': attribute_value, 'offset': '1',
+        params = {'typeName': type_name, 'attrName': attribute_name, 'attrValue': attribute_value, 'offset': '0',
                   'limit': '10'}
+        LOG.debug(f"Search query params {params}")
         return self.client.search_attribute(**params)
 
     def search_full_text(self, type_name: str, attribute_value: str) -> dict:
-        params = {'typeName': type_name, 'attrValue': attribute_value, 'offset': '1',
+        params = {'typeName': type_name, 'attrValue': attribute_value, 'offset': '0',
                   'limit': '10'}
+        LOG.debug(f"Search query params {params}")
         return self.client.search_basic(**params)
 
     @staticmethod
