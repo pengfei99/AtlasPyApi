@@ -1,8 +1,17 @@
 [tool.poetry]
-name = "atlas_client"
-version = "0.1.0"
+name = "atlaspyapi"
+version = "0.2.0"
 description = ""
 authors = ["pengfei <liu.pengfei@hotmail.fr>"]
+keywords = ["keyword", "another_keyword"]
+readme = "README.md"
+license = "Apache License 2.0"
+homepage = "https://github.com/pengfei99/AtlasPyApi"
+repository = "https://github.com/pengfei99/AtlasPyApi"
+include = [
+    "LICENSE",
+]
+
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -10,6 +19,9 @@ Jinja2 = "^3.0.3"
 six = "^1.16.0"
 click = "^8.0.4"
 requests = "^2.27.1"
+twine = "^3.8.0"
+apache-atlas = "^0.0.11"
+
 
 
 [tool.poetry.dev-dependencies]
