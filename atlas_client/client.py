@@ -21,7 +21,10 @@ import requests
 from atlas_client import models, utils, base, exceptions
 from atlas_client.exceptions import handle_response, BadHttpAuthArg
 
-LOG = logging.getLogger('pyatlasclient')
+from atlas_client.log_manager import LogManager
+
+LOG = LogManager(__name__).get_logger()
+
 
 # this defines where the Atlas client delegates to for actual logic
 ENTRY_POINTS = {'entity_guid': models.EntityGuid,

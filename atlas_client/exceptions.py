@@ -17,9 +17,10 @@ Adapted from python-novaclient with some changes.  Original source:
 
 https://github.com/openstack/python-novaclient/blob/master/novaclient/exceptions.py
 """
-import logging
 
-LOG = logging.getLogger('pyatlasclient')
+from atlas_client.log_manager import LogManager
+
+LOG = LogManager(__name__).get_logger()
 
 
 class ClientError(Exception):
