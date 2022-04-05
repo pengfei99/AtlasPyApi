@@ -11,10 +11,11 @@
 #    under the License.
 
 import inspect
-import logging
 from collections import namedtuple
 
-LOG = logging.getLogger('pyatlasclient')
+from atlas_client.log_manager import LogManager
+
+LOG = LogManager(__name__).get_logger()
 
 EVENT_HANDLERS = {}
 state_list = ['ANY', 'STARTED', 'FAILED', 'FINISHED', 'PROGRESS']

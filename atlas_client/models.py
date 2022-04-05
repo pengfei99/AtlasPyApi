@@ -14,12 +14,13 @@
 Defines all the model classes for the various parts of the API.
 """
 import json
-import logging
 import itertools
 import six
 from atlas_client import base, exceptions, events
 
-LOG = logging.getLogger('atlaspyapi')
+from atlas_client.log_manager import LogManager
+
+LOG = LogManager(__name__).get_logger()
 
 
 class EntityCollection(base.DependentModelCollection):
@@ -47,9 +48,10 @@ class EntityCollection(base.DependentModelCollection):
 
 class Entity(base.DependentModel):
     collection_class = EntityCollection
-    fields = ('guid', 'status', 'displayText', 'classificationNames', 'typeName', 'attributes', 'createdBy',
-              'updatedBy', 'createTime', 'updateTime', 'version', 'relationshipAttributes',)
-
+    fields = ('guid', 'status', 'displayText', 'classificationNames', 'classifications',
+              'typeName', 'attributes', 'createdBy', 'updatedBy', 'createTime',
+              'updateTime', 'version', 'relationshipAttributes', 'businessAttributes', 'customAttributes',
+              'homeId', 'isIncomplete', 'labels', 'meanings', 'provenanceType', 'proxy', 'status',)
 
 class EntityPostCollection(base.QueryableModelCollection):
     def __call__(self, *args, **kwargs):

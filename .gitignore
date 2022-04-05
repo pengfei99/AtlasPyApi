@@ -9,4 +9,5 @@ atlas_client/test/
 atlas_client/__pycache__/
 .idea/
 log
+my_secrets
 

@@ -16,13 +16,13 @@ Defines all the base classes for response objects.
 
 import ast
 import json
-import logging
 import time
 from datetime import datetime, timedelta
 import six
 from atlas_client import events, exceptions, utils
+from atlas_client.log_manager import LogManager
 
-LOG = logging.getLogger('pyatlasclient')
+LOG = LogManager(__name__).get_logger()
 
 OLDEST_SUPPORTED_VERSION = (1, 7, 0)
 
