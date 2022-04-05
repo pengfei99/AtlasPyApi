@@ -102,6 +102,14 @@ class Atlas(object):
 
         raise AttributeError(attr)
 
+    def purge_entity_by_guid(self, guid: str):
+        headers = {'Authorization': self.client.auth_header,
+                   "Content-Type": "application/json",
+                   "Accept": "application/json"}
+        purge_url = f"{self.base_url}/api/atlas/v2/admin/purge/"
+        response = requests.put(purge_url, data=guid, headers=headers)
+        return response
+
     def get_guid_by_qualified_name(self, entity_type_name: str, entity_qualified_name, **kwargs):
         if 'limit' in kwargs and isinstance(kwargs['limit'], int):
             input_limit = kwargs['limit']
@@ -111,7 +119,7 @@ class Atlas(object):
             input_offset = kwargs['offset']
         else:
             input_offset = 0
-        headers = {'Authorization': f'Bearer {self.oidc_token}',
+        headers = {'Authorization': self.client.auth_header,
                    "Content-Type": "application/json",
                    "Accept": "application/json"}
         params = {"attrName": "qualifiedName",
@@ -141,15 +149,15 @@ class HttpClient(object):
     def __init__(self, host, identifier, username=None, password=None, oidc_token=None, validate_ssl=True,
                  timeout=10, max_retries=5, auth=None):
         if oidc_token:
-            auth_header = f'Bearer {oidc_token}'
+            self.auth_header = f'Bearer {oidc_token}'
         elif username and password:
             basic_token = utils.generate_http_basic_token(username=username, password=password)
-            auth_header = f'Basic {basic_token}'
+            self.auth_header = f'Basic {basic_token}'
         else:
             raise BadHttpAuthArg
         self.request_params = {
             'headers': {'X-Requested-By': identifier,
-                        'Authorization': auth_header},
+                        'Authorization': self.auth_header},
             'verify': validate_ssl,
             'timeout': timeout,
         }

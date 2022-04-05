@@ -12,6 +12,8 @@
 
 from abc import ABC, abstractmethod
 from typing import KeysView
+from requests.models import Response
+
 from atlas_client.client import Atlas
 
 
@@ -41,11 +43,14 @@ class EntityManager(ABC):
     def get_s3_attributes_key_list(entity: dict) -> KeysView:
         return EntityManager.get_entity_attributes(entity).keys()
 
-    def update_entity(self, guid: str, attribute_name: str, attribute_value: str) -> None:
-        s3_bucket = self.client.entity_guid(guid)
-        s3_bucket.entity['attributes'][attribute_name] = attribute_value
-        s3_bucket.update(attribute=attribute_name)
+    def update_entity(self, guid: str, attribute_name: str, attribute_value: str) -> Response:
+        current_entity_obj = self.client.entity_guid(guid)
+        current_entity_obj.entity['attributes'][attribute_name] = attribute_value
+        return current_entity_obj.update(attribute=attribute_name)
 
-    def delete_entity(self, guid: str) -> None:
-        s3_bucket = self.client.entity_guid(guid)
-        s3_bucket.delete()
+    def delete_entity(self, guid: str) -> Response:
+        current_entity_obj = self.client.entity_guid(guid)
+        return current_entity_obj.delete()
+
+    def purge_entity(self, guid: str) -> Response:
+        return self.client.purge_entity_by_guid(guid)
