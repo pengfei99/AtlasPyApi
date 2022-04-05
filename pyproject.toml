@@ -17,10 +17,10 @@ include = [
 python = "^3.8"
 Jinja2 = "^3.0.3"
 six = "^1.16.0"
-click = "^8.0.4"
+click = "^8.1.2"
 requests = "^2.27.1"
-twine = "^3.8.0"
-apache-atlas = "^0.0.11"
+twine = "^4.0.0"
+
 
 
 
