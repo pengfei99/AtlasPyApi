@@ -3,7 +3,7 @@ from atlas_client.entity_search.EntityFinder import EntityFinder
 from my_secrets import secret
 
 
-def test_search_by_qualified_name():
+def main():
     local = False
     # config for atlas client
 
@@ -19,8 +19,9 @@ def test_search_by_qualified_name():
         oidc_token = secret.oidc_token
         atlas_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
     entity_finder = EntityFinder(atlas_client)
-    res = entity_finder.search_by_qualified_name("hive_table", "user-pengfei@movies.Character")
-    # EntityFinder.show_search_results(res)
-    # guids = EntityFinder.get_result_entity_guid_list(res)
-    print(res)
+    guid = entity_finder.get_guid_by_qualified_name("hive_table", "user-pengfei@movies.Character")
+    print(guid)
 
+
+if __name__ == "__main__":
+    main()
