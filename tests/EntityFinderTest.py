@@ -19,8 +19,10 @@ def main():
         oidc_token = secret.oidc_token
         atlas_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
     entity_finder = EntityFinder(atlas_client)
-    guid = entity_finder.get_guid_by_qualified_name("hive_table", "user-pengfei@movies.Character")
-    print(guid)
+    t_guid = entity_finder.get_guid_by_qualified_name("hive_table", "default.students")
+    print(t_guid)
+    d_guid = entity_finder.get_guid_by_qualified_name("hive_db", "default")
+    print(d_guid)
 
 
 if __name__ == "__main__":
