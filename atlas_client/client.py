@@ -14,17 +14,15 @@ import copy
 import functools
 import io
 import json
-import logging
 import tarfile
 
 import requests
+
 from atlas_client import models, utils, base, exceptions
 from atlas_client.exceptions import handle_response, BadHttpAuthArg
-
 from atlas_client.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
-
 
 # this defines where the Atlas client delegates to for actual logic
 ENTRY_POINTS = {'entity_guid': models.EntityGuid,
@@ -68,7 +66,7 @@ class Atlas(object):
     def __init__(self, host: str, port: int = None, username: str = None, password: str = None, oidc_token: str = None,
                  identifier: str = None, protocol: str = None, validate_ssl: bool = True,
                  timeout=10, max_retries=5, auth=None):
-
+        self.oidc_token = oidc_token
         self.base_url = utils.generate_base_url(host, port=port, protocol=protocol)
         if identifier is None:
             identifier = 'python-atlasclient'
@@ -103,6 +101,29 @@ class Atlas(object):
             return getattr(self.client, attr)
 
         raise AttributeError(attr)
+
+    def get_guid_by_qualified_name(self, entity_type_name: str, entity_qualified_name, **kwargs):
+        if 'limit' in kwargs and isinstance(kwargs['limit'], int):
+            input_limit = kwargs['limit']
+        else:
+            input_limit = 10
+        if 'offset' in kwargs and isinstance(kwargs['offset'], int):
+            input_offset = kwargs['offset']
+        else:
+            input_offset = 0
+        headers = {'Authorization': f'Bearer {self.oidc_token}',
+                   "Content-Type": "application/json",
+                   "Accept": "application/json"}
+        params = {"attrName": "qualifiedName",
+                  "attrValuePrefix": f"{entity_qualified_name}",
+                  "limit": f"{input_limit}",
+                  "offset": f"{input_offset}",
+                  "typeName": f"{entity_type_name}"}
+        search_url = f"{self.base_url}/api/atlas/v2/search/attribute"
+        response = requests.get(f"{search_url}", params=params, headers=headers)
+        # convert response json text to python dict
+        response_dict = json.loads(response.text)
+        return response_dict["entities"][0]["guid"]
 
 
 class HttpClient(object):
