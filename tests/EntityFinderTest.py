@@ -7,8 +7,6 @@ def main():
     local = False
     # config for atlas client
 
-
-
     if local:
         atlas_local_hostname = "http://localhost"
         login = "admin"
@@ -21,10 +19,10 @@ def main():
         oidc_token = secret.oidc_token
         atlas_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
     entity_finder = EntityFinder(atlas_client)
-    res = entity_finder.search_full_text("hive_table", "user-pengfei@movies.Character")
-    EntityFinder.show_search_results(res)
-    guids = EntityFinder.get_result_entity_guid_list(res)
-    print(guids)
+    t_guid = entity_finder.get_guid_by_qualified_name("hive_table", "default.students")
+    print(t_guid)
+    d_guid = entity_finder.get_guid_by_qualified_name("hive_db", "default")
+    print(d_guid)
 
 
 if __name__ == "__main__":

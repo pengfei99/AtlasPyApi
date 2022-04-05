@@ -14,17 +14,15 @@ import copy
 import functools
 import io
 import json
-import logging
 import tarfile
 
 import requests
+
 from atlas_client import models, utils, base, exceptions
 from atlas_client.exceptions import handle_response, BadHttpAuthArg
-
 from atlas_client.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
-
 
 # this defines where the Atlas client delegates to for actual logic
 ENTRY_POINTS = {'entity_guid': models.EntityGuid,
@@ -68,7 +66,7 @@ class Atlas(object):
     def __init__(self, host: str, port: int = None, username: str = None, password: str = None, oidc_token: str = None,
                  identifier: str = None, protocol: str = None, validate_ssl: bool = True,
                  timeout=10, max_retries=5, auth=None):
-
+        self.oidc_token = oidc_token
         self.base_url = utils.generate_base_url(host, port=port, protocol=protocol)
         if identifier is None:
             identifier = 'python-atlasclient'
@@ -104,6 +102,37 @@ class Atlas(object):
 
         raise AttributeError(attr)
 
+    def purge_entity_by_guid(self, guid: str):
+        headers = {'Authorization': self.client.auth_header,
+                   "Content-Type": "application/json",
+                   "Accept": "application/json"}
+        purge_url = f"{self.base_url}/api/atlas/v2/admin/purge/"
+        response = requests.put(purge_url, data=guid, headers=headers)
+        return response
+
+    def get_guid_by_qualified_name(self, entity_type_name: str, entity_qualified_name, **kwargs):
+        if 'limit' in kwargs and isinstance(kwargs['limit'], int):
+            input_limit = kwargs['limit']
+        else:
+            input_limit = 10
+        if 'offset' in kwargs and isinstance(kwargs['offset'], int):
+            input_offset = kwargs['offset']
+        else:
+            input_offset = 0
+        headers = {'Authorization': self.client.auth_header,
+                   "Content-Type": "application/json",
+                   "Accept": "application/json"}
+        params = {"attrName": "qualifiedName",
+                  "attrValuePrefix": f"{entity_qualified_name}",
+                  "limit": f"{input_limit}",
+                  "offset": f"{input_offset}",
+                  "typeName": f"{entity_type_name}"}
+        search_url = f"{self.base_url}/api/atlas/v2/search/attribute"
+        response = requests.get(f"{search_url}", params=params, headers=headers)
+        # convert response json text to python dict
+        response_dict = json.loads(response.text)
+        return response_dict["entities"][0]["guid"]
+
 
 class HttpClient(object):
     """Our HTTP based REST client.
@@ -120,15 +149,15 @@ class HttpClient(object):
     def __init__(self, host, identifier, username=None, password=None, oidc_token=None, validate_ssl=True,
                  timeout=10, max_retries=5, auth=None):
         if oidc_token:
-            auth_header = f'Bearer {oidc_token}'
+            self.auth_header = f'Bearer {oidc_token}'
         elif username and password:
             basic_token = utils.generate_http_basic_token(username=username, password=password)
-            auth_header = f'Basic {basic_token}'
+            self.auth_header = f'Basic {basic_token}'
         else:
             raise BadHttpAuthArg
         self.request_params = {
             'headers': {'X-Requested-By': identifier,
-                        'Authorization': auth_header},
+                        'Authorization': self.auth_header},
             'verify': validate_ssl,
             'timeout': timeout,
         }
