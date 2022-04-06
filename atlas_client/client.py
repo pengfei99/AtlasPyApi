@@ -131,7 +131,12 @@ class Atlas(object):
         response = requests.get(f"{search_url}", params=params, headers=headers)
         # convert response json text to python dict
         response_dict = json.loads(response.text)
-        return response_dict["entities"][0]["guid"]
+        guid = None
+        try:
+            guid = response_dict.get("entities").get(0).get("guid")
+        except:
+            LOG.exception("Entity that you are looking for does not exist")
+        return guid
 
 
 class HttpClient(object):
