@@ -12,14 +12,14 @@
 
 import os
 import time
-from configparser import SafeConfigParser, ConfigParser
+from configparser import ConfigParser
+
 import jinja2
-import pkg_resources
 
 
 # get current time
 def current_milli_time():
-    return int(round(time.time() * 1000))
+    return int(round(time.time()))
 
 
 # set up config file
