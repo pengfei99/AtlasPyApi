@@ -7,8 +7,6 @@ def main():
     local = False
     # config for atlas client
 
-
-
     if local:
         atlas_local_hostname = "http://localhost"
         login = "admin"
