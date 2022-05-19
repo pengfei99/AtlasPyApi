@@ -46,6 +46,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 pytest setuptools wheel twine
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -e .
         # check your code style conformity with flake8
       - name: Lint with flake8
         run: |
