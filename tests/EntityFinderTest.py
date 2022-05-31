@@ -1,5 +1,5 @@
-from atlas_client.client import Atlas
-from atlas_client.entity_search.EntityFinder import EntityFinder
+from atlaspyapi.client import Atlas
+from atlaspyapi.entity_search.EntityFinder import EntityFinder
 from my_secrets import secret
 
 

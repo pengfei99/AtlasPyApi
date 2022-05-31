@@ -1,6 +1,6 @@
 import json
 
-from atlas_client.entity_source_generation.HiveTableEntityGenerator import HiveTableEntityGenerator
+from atlaspyapi.entity_source_generation.HiveTableEntityGenerator import HiveTableEntityGenerator
 
 
 def test_generate_hive_table_json_source():

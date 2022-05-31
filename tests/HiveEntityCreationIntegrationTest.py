@@ -1,7 +1,7 @@
-from atlas_client.client import Atlas
-from atlas_client.entity_management.hive.HiveColumnManager import HiveColumnManager
-from atlas_client.entity_management.hive.HiveDBManager import HiveDBManager
-from atlas_client.entity_management.hive.HiveTableManager import HiveTableManager
+from atlaspyapi.client import Atlas
+from atlaspyapi.entity_management.hive.HiveColumnManager import HiveColumnManager
+from atlaspyapi.entity_management.hive.HiveDBManager import HiveDBManager
+from atlaspyapi.entity_management.hive.HiveTableManager import HiveTableManager
 from my_secrets import secret
 
 
@@ -19,12 +19,12 @@ def main():
         atlas_prod_port = 443
         oidc_token = secret.oidc_token
         atlas_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
-    # finder = EntityFinder(atlas_client)
+    # finder = EntityFinder(atlaspyapi)
     # res = finder.search_full_text("hive_table", "pengfei")
     # print(f"Search result is {res}")
     hive_db = HiveDBManager(atlas_client)
     hive_table = HiveTableManager(atlas_client)
-    # hive_column = HiveColumnManager(atlas_client)
+    # hive_column = HiveColumnManager(atlaspyapi)
 
     # insert hive tables
     # hive_db.create_entity("pengfei-stock", "pengfei.org", "database for my stock market",owner="pliu",location="pengfei.org")

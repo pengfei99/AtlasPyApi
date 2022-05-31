@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from atlas_client.entity_source_generation.utile import current_milli_time
+from atlaspyapi.entity_source_generation.utile import current_milli_time
 
 
 def test_utils():
