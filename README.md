@@ -7,8 +7,9 @@ In this repository, we develop a python api to generate atlas entities and impor
 ## Quick start
 
 ### Create a client to connect to an Atlas instance
+
 ```python
-from atlas_client.client import Atlas
+from atlaspyapi.client import Atlas
 # login with your token
 hostname = "https://atlas.lab.sspcloud.fr"
 port = 443
@@ -19,8 +20,9 @@ atlas_client = Atlas(hostname, port, oidc_token=oidc_token)
 atlas_client = Atlas(hostname, port, username='',password='')
 ```
 ### Search entity and return entity's guid
+
 ```python
-from atlas_client.entity_search.EntityFinder import EntityFinder
+from atlaspyapi.entity_search.EntityFinder import EntityFinder
 
 finder = EntityFinder(atlas_client)
 search_result = finder.search_full_text("aws_s3_bucket", "test")
@@ -40,8 +42,9 @@ for guid in guid_list:
 ### Atlas entities CRUD
 
 #### S3 entities
+
 ```python
-from atlas_client.entity_management.s3.S3BucketManager import S3BucketManager
+from atlaspyapi.entity_management.s3.S3BucketManager import S3BucketManager
 
 s3_bucket_manager = S3BucketManager(atlas_client)
 
@@ -85,8 +88,9 @@ hive_column.create_entity("stock_name", "string", "pengfei.org@pengfei-stock.fav
 
 ### Generate atlas entity json file
 If you want to use the Atlas rest api by yourself, we also provide you the support of json file generation
+
 ```python
-from atlas_client.entity_source_generation.S3BucketEntityGenerator import S3BucketEntityGenerator
+from atlaspyapi.entity_source_generation.S3BucketEntityGenerator import S3BucketEntityGenerator
 name = "test"
 domain = "s3://test.org"
 qualified_name = "s3://test.org/test1"

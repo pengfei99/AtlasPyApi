@@ -5,8 +5,8 @@
 atlaspyapi.egg-info/
 build/
 dist/
-atlas_client/test/
-atlas_client/__pycache__/
+atlaspyapi/test/
+atlaspyapi/__pycache__/
 .idea/
 log
 my_secrets

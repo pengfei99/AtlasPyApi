@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "atlaspyapi"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = ["pengfei <liu.pengfei@hotmail.fr>"]
 keywords = ["keyword", "another_keyword"]
@@ -19,7 +19,6 @@ Jinja2 = "^3.0.3"
 six = "^1.16.0"
 click = "^8.1.2"
 requests = "^2.27.1"
-twine = "^4.0.0"
 
 
 
