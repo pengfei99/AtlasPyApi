@@ -13,7 +13,7 @@
 import inspect
 from collections import namedtuple
 
-from atlas_client.log_manager import LogManager
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 

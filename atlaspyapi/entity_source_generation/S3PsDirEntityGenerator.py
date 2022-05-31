@@ -10,8 +10,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-from atlas_client.definition import CONFIG_PATH, TEMPLATE_FOLDER_PATH
-from atlas_client.entity_source_generation.utile import populate_template, init_config, current_milli_time
+from atlaspyapi.definition import CONFIG_PATH, TEMPLATE_FOLDER_PATH
+from atlaspyapi.entity_source_generation.utile import populate_template, init_config, current_milli_time
 
 
 class S3PsDirEntityGenerator:

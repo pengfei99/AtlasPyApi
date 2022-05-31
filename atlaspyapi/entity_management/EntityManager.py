@@ -14,7 +14,7 @@ from abc import ABC, abstractmethod
 from typing import KeysView
 from requests.models import Response
 
-from atlas_client.client import Atlas
+from atlaspyapi.client import Atlas
 
 
 class EntityManager(ABC):

@@ -1,6 +1,6 @@
-from atlas_client.client import Atlas
+from atlaspyapi.client import Atlas
 
-from atlas_client.log_manager import LogManager
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 

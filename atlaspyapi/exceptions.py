@@ -18,7 +18,7 @@ Adapted from python-novaclient with some changes.  Original source:
 https://github.com/openstack/python-novaclient/blob/master/novaclient/exceptions.py
 """
 
-from atlas_client.log_manager import LogManager
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 

@@ -1,19 +1,19 @@
-from atlas_client.entity_source_generation.HiveColumnEntityGenerator import (
+from atlaspyapi.entity_source_generation.HiveColumnEntityGenerator import (
     HiveColumnEntityGenerator,
 )
-from atlas_client.entity_source_generation.HiveDBEntityGenerator import (
+from atlaspyapi.entity_source_generation.HiveDBEntityGenerator import (
     HiveDBEntityGenerator,
 )
-from atlas_client.entity_source_generation.HiveTableEntityGenerator import (
+from atlaspyapi.entity_source_generation.HiveTableEntityGenerator import (
     HiveTableEntityGenerator,
 )
-from atlas_client.entity_source_generation.S3BucketEntityGenerator import (
+from atlaspyapi.entity_source_generation.S3BucketEntityGenerator import (
     S3BucketEntityGenerator,
 )
-from atlas_client.entity_source_generation.S3ObjectEntityGenerator import (
+from atlaspyapi.entity_source_generation.S3ObjectEntityGenerator import (
     S3ObjectEntityGenerator,
 )
-from atlas_client.entity_source_generation.S3PsDirEntityGenerator import (
+from atlaspyapi.entity_source_generation.S3PsDirEntityGenerator import (
     S3PsDirEntityGenerator,
 )
 

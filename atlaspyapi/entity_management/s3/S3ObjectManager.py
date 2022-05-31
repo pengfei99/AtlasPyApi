@@ -12,9 +12,9 @@
 
 import json
 
-from atlas_client.client import Atlas
-from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.S3ObjectEntityGenerator import (
+from atlaspyapi.client import Atlas
+from atlaspyapi.entity_management.EntityManager import EntityManager
+from atlaspyapi.entity_source_generation.S3ObjectEntityGenerator import (
     S3ObjectEntityGenerator,
 )
 

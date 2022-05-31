@@ -16,9 +16,9 @@ Defines all the model classes for the various parts of the API.
 import json
 import itertools
 import six
-from atlas_client import base, exceptions, events
+from atlaspyapi import base, exceptions, events
 
-from atlas_client.log_manager import LogManager
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 

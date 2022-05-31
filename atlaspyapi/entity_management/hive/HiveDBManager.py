@@ -12,12 +12,12 @@
 
 import json
 
-from atlas_client.client import Atlas
-from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.HiveDBEntityGenerator import (
+from atlaspyapi.client import Atlas
+from atlaspyapi.entity_management.EntityManager import EntityManager
+from atlaspyapi.entity_source_generation.HiveDBEntityGenerator import (
     HiveDBEntityGenerator,
 )
-from atlas_client.log_manager import LogManager
+from atlaspyapi.log_manager import LogManager
 
 my_logger = LogManager(__name__).get_logger()
 my_logger.debug("Init hive db manager")

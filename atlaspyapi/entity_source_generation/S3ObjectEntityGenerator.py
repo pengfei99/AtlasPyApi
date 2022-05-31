@@ -11,8 +11,8 @@
 #    under the License.
 
 
-from atlas_client.definition import TEMPLATE_FOLDER_PATH, CONFIG_PATH
-from atlas_client.entity_source_generation.utile import init_config, populate_template, current_milli_time
+from atlaspyapi.definition import TEMPLATE_FOLDER_PATH, CONFIG_PATH
+from atlaspyapi.entity_source_generation.utile import init_config, populate_template, current_milli_time
 
 
 class S3ObjectEntityGenerator:

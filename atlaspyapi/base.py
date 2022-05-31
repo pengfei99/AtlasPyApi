@@ -19,8 +19,8 @@ import json
 import time
 from datetime import datetime, timedelta
 import six
-from atlas_client import events, exceptions, utils
-from atlas_client.log_manager import LogManager
+from atlaspyapi import events, exceptions, utils
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 
@@ -113,7 +113,7 @@ class ModelCollection(object):
 
     This is what enables things like:
 
-    entity_bulk_collection = atlas_client.entity_bulk(**params)
+    entity_bulk_collection = atlaspyapi.entity_bulk(**params)
     for bulk in entity_bulk_collection:
         for entity in bulk.entities:
             entity.version == 12345

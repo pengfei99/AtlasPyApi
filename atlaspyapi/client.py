@@ -18,9 +18,9 @@ import tarfile
 
 import requests
 
-from atlas_client import models, utils, base, exceptions
-from atlas_client.exceptions import handle_response, BadHttpAuthArg
-from atlas_client.log_manager import LogManager
+from atlaspyapi import models, utils, base, exceptions
+from atlaspyapi.exceptions import handle_response, BadHttpAuthArg
+from atlaspyapi.log_manager import LogManager
 
 LOG = LogManager(__name__).get_logger()
 
