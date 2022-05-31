@@ -12,8 +12,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "upload"
-  upload:
+  # This workflow contains a single job called "build"
+  build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -22,22 +22,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Sets up python
-      - uses: actions/setup-python@v2
+      - name: Build and publish to pypi
+        uses: JRubics/poetry-publish@v1.11
         with:
-          python-version: 3.8
+          python_version: 3.8
+          pypi_token: ${{ secrets.PYPI_API_TOKEN }}
 
-      # Install dependencies
-      - name: "Installs dependencies"
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install setuptools wheel twine
-
-      # Build and upload to PyPI
-      - name: "Builds and uploads to PyPI"
-        run: |
-          python3 setup.py sdist bdist_wheel
-          python3 -m twine upload dist/*
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
