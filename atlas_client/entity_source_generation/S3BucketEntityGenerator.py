@@ -12,7 +12,7 @@
 
 from atlas_client.definition import CONFIG_PATH
 from atlas_client.definition import TEMPLATE_FOLDER_PATH
-from atlas_client.entity_source_generation.utile import *
+from atlas_client.entity_source_generation.utile import init_config, populate_template, current_milli_time
 
 
 class S3BucketEntityGenerator:
@@ -24,12 +24,12 @@ class S3BucketEntityGenerator:
         return {
             "entity_type": "aws_s3_bucket",
             "name": "Required attribute. "
-            "The name of the s3 bucket, Example, donnees-insee",
+                    "The name of the s3 bucket, Example, donnees-insee",
             "domain": "Required attribute. "
-            " The domain of your s3. Example, minio.lab.sspcloud.fr",
+                      " The domain of your s3. Example, minio.lab.sspcloud.fr",
             "qualified_name": "Required attribute. "
-            " Fully qualified name of the s3 bucket. It must be unique"
-            " Example, s3://minio.lab.sspcloud.fr/donnees-insee  ",
+                              " Fully qualified name of the s3 bucket. It must be unique"
+                              " Example, s3://minio.lab.sspcloud.fr/donnees-insee  ",
             "description": "Required attribute. " "The description of the entity",
             "creator_id": "User id of the entity creator",
             "updator_id": "User id of the entity updater",
@@ -44,7 +44,7 @@ class S3BucketEntityGenerator:
 
     @staticmethod
     def generate_s3_bucket_json_source(
-        name: str, domain: str, qualified_name: str, description: str, **kwargs
+            name: str, domain: str, qualified_name: str, description: str, **kwargs
     ):
         # get s3_bucket default type
         entity_type = S3BucketEntityGenerator.config.get("aws_s3_bucket", "entity_type")

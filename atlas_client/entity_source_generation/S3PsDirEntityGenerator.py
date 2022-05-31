@@ -11,7 +11,7 @@
 #    under the License.
 
 from atlas_client.definition import CONFIG_PATH, TEMPLATE_FOLDER_PATH
-from atlas_client.entity_source_generation.utile import *
+from atlas_client.entity_source_generation.utile import populate_template, init_config, current_milli_time
 
 
 class S3PsDirEntityGenerator:
@@ -25,14 +25,14 @@ class S3PsDirEntityGenerator:
             "entity_type": "aws_s3_pseudo_dir",
             "name": "Required attribute. " "The name of the s3 pseudo dir, Example, RP",
             "qualifiedName": "Required attribute. "
-            " The fully qualified name of the pseudo dir. It must be unique"
-            " Example, s3://minio.lab.sspcloud.fr/donnees-insee/RP/  ",
+                             " The fully qualified name of the pseudo dir. It must be unique"
+                             " Example, s3://minio.lab.sspcloud.fr/donnees-insee/RP/  ",
             "bucket_qualified_name": "Required attribute. "
-            " The fully qualified name of the s3 bucket which the ps_dir belongs to. "
-            "Example, s3://minio.lab.sspcloud.fr/donnees-insee",
+                                     " The fully qualified name of the s3 bucket which the ps_dir belongs to. "
+                                     "Example, s3://minio.lab.sspcloud.fr/donnees-insee",
             "object_prefix": "Required attribute. "
-            " The prefix of all objects in this pseudo dir. "
-            "Example, RP/",
+                             " The prefix of all objects in this pseudo dir. "
+                             "Example, RP/",
             "description": "The description of the entity",
             "creator_id": "User id of the entity creator",
             "updator_id": "User id of the entity updater",
@@ -46,11 +46,11 @@ class S3PsDirEntityGenerator:
 
     @staticmethod
     def generate_s3_ps_dir_entity_json_source(
-        name: str,
-        qualified_name: str,
-        bucket_qualified_name: str,
-        object_prefix: str,
-        **kwargs
+            name: str,
+            qualified_name: str,
+            bucket_qualified_name: str,
+            object_prefix: str,
+            **kwargs
     ):
         # get s3_ps_dir default type
         entity_type = S3PsDirEntityGenerator.config.get(
@@ -59,7 +59,7 @@ class S3PsDirEntityGenerator:
 
         # need to be modified
         template_file_path = (
-            S3PsDirEntityGenerator.template_folder_path + "/" + entity_type + ".json.j2"
+                S3PsDirEntityGenerator.template_folder_path + "/" + entity_type + ".json.j2"
         )
 
         # generate default value for optional empty attributes

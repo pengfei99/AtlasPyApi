@@ -12,7 +12,7 @@
 
 from atlas_client.definition import CONFIG_PATH
 from atlas_client.definition import TEMPLATE_FOLDER_PATH
-from atlas_client.entity_source_generation.utile import *
+from atlas_client.entity_source_generation.utile import current_milli_time, init_config, populate_template
 
 
 class HiveColumnEntityGenerator:
@@ -24,15 +24,15 @@ class HiveColumnEntityGenerator:
         return {
             "entity_type": "hive_column",
             "column_name": "Required attribute. "
-            "The name of the hive column, Example, studentId",
+                           "The name of the hive column, Example, studentId",
             "column_type": "Required attribute"
-            "The data type of the hive column. Example, int, string, bool, etc.",
+                           "The data type of the hive column. Example, int, string, bool, etc.",
             "column_qualified_name": "Required attribute. "
-            " Fully qualified name of the hive column. It must be unique"
-            " Example, insee.org@insee-data.students.studentId ",
+                                     " Fully qualified name of the hive column. It must be unique"
+                                     " Example, insee.org@insee-data.students.studentId ",
             "table_qualified_name": "Required attribute. "
-            " The hive table name that contains the column."
-            " Example, insee.org@insee-data.students",
+                                    " The hive table name that contains the column."
+                                    " Example, insee.org@insee-data.students",
             "description": "The description of the entity",
             "createdBy": "User id of the entity creator",
             "updatedBy": "User id of the entity updater",
@@ -43,11 +43,11 @@ class HiveColumnEntityGenerator:
 
     @staticmethod
     def generate_hive_column_json_source(
-        column_name: str,
-        column_type: str,
-        table_qualified_name: str,
-        description: str,
-        **kwargs,
+            column_name: str,
+            column_type: str,
+            table_qualified_name: str,
+            description: str,
+            **kwargs,
     ) -> str:
         # get hive_column
         entity_type = "hive_column"

@@ -164,8 +164,8 @@ class Atlas(object):
         guid = None
         try:
             guid = response_dict.get("entities").get(0).get("guid")
-        except:
-            LOG.exception("Entity that you are looking for does not exist")
+        except Exception as e:
+            LOG.exception(f"Entity that you are looking for does not exist. {e}")
         return guid
 
 

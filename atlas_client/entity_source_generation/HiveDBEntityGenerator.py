@@ -12,7 +12,7 @@
 
 from atlas_client.definition import CONFIG_PATH
 from atlas_client.definition import TEMPLATE_FOLDER_PATH
-from atlas_client.entity_source_generation.utile import *
+from atlas_client.entity_source_generation.utile import init_config, populate_template, current_milli_time
 
 
 class HiveDBEntityGenerator:
@@ -24,12 +24,12 @@ class HiveDBEntityGenerator:
         return {
             "entity_type": "hive_db",
             "name": "Required attribute. "
-            "The name of the hive db, Example, insee-data",
+                    "The name of the hive db, Example, insee-data",
             "clusterName": "Required attribute. "
-            " The cluster name of your hive db. Example, insee.org",
+                           " The cluster name of your hive db. Example, insee.org",
             "qualified_name": "Required attribute. "
-            " Fully qualified name of the hive db. It must be unique"
-            " Example, insee.org@insee-data ",
+                              " Fully qualified name of the hive db. It must be unique"
+                              " Example, insee.org@insee-data ",
             "description": "The description of the entity",
             "createdBy": "User id of the entity creator",
             "updatedBy": "User id of the entity updater",
@@ -41,7 +41,7 @@ class HiveDBEntityGenerator:
 
     @staticmethod
     def generate_hive_db_json_source(
-        name: str, cluster_name: str, description: str, **kwargs
+            name: str, cluster_name: str, description: str, **kwargs
     ):
         # get hive_db
         entity_type = "hive_db"
