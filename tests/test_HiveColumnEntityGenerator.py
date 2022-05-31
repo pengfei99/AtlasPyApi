@@ -1,5 +1,4 @@
 import json
-import pytest
 
 from atlas_client.entity_source_generation.HiveColumnEntityGenerator import HiveColumnEntityGenerator
 

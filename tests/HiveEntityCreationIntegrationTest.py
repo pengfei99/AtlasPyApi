@@ -24,7 +24,7 @@ def main():
     # print(f"Search result is {res}")
     hive_db = HiveDBManager(atlas_client)
     hive_table = HiveTableManager(atlas_client)
-    hive_column = HiveColumnManager(atlas_client)
+    # hive_column = HiveColumnManager(atlas_client)
 
     # insert hive tables
     # hive_db.create_entity("pengfei-stock", "pengfei.org", "database for my stock market",owner="pliu",location="pengfei.org")
