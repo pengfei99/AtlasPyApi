@@ -18,8 +18,8 @@ from atlas_client.log_manager import LogManager
 LOG = LogManager(__name__).get_logger()
 
 EVENT_HANDLERS = {}
-state_list = ['ANY', 'STARTED', 'FAILED', 'FINISHED', 'PROGRESS']
-states = namedtuple('EventStates', state_list)(*state_list)
+state_list = ["ANY", "STARTED", "FAILED", "FINISHED", "PROGRESS"]
+states = namedtuple("EventStates", state_list)(*state_list)
 
 
 def evented(method):
@@ -63,8 +63,8 @@ def publish(obj, event, event_state, **kwargs):
     fallbacks = None
     callbacks = []
     for cls in potential:
-        event_key = '.'.join([cls, event, event_state])
-        backup_key = '.'.join([cls, event, states.ANY])
+        event_key = ".".join([cls, event, event_state])
+        backup_key = ".".join([cls, event, states.ANY])
         if event_key in EVENT_HANDLERS:
             callbacks = EVENT_HANDLERS[event_key]
             break
@@ -93,7 +93,7 @@ def subscribe(obj, event, callback, event_state=None):
     if event_state is None:
         event_state = states.ANY
 
-    event_key = '.'.join([cls, event, event_state])
+    event_key = ".".join([cls, event, event_state])
     if event_key not in EVENT_HANDLERS:
         EVENT_HANDLERS[event_key] = []
 

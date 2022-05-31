@@ -18,7 +18,6 @@ from atlas_client.client import Atlas
 
 
 class EntityManager(ABC):
-
     def __init__(self, atlas_client: Atlas):
         self.client = atlas_client
 
@@ -33,19 +32,21 @@ class EntityManager(ABC):
 
     @staticmethod
     def get_entity_attributes(entity: dict) -> dict:
-        return entity['attributes']
+        return entity["attributes"]
 
     @staticmethod
     def show_entity_attributes(entity: dict) -> None:
-        print(entity['attributes'])
+        print(entity["attributes"])
 
     @staticmethod
     def get_s3_attributes_key_list(entity: dict) -> KeysView:
         return EntityManager.get_entity_attributes(entity).keys()
 
-    def update_entity(self, guid: str, attribute_name: str, attribute_value: str) -> Response:
+    def update_entity(
+        self, guid: str, attribute_name: str, attribute_value: str
+    ) -> Response:
         current_entity_obj = self.client.entity_guid(guid)
-        current_entity_obj.entity['attributes'][attribute_name] = attribute_value
+        current_entity_obj.entity["attributes"][attribute_name] = attribute_value
         return current_entity_obj.update(attribute=attribute_name)
 
     def delete_entity(self, guid: str) -> Response:

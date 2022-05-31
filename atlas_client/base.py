@@ -39,6 +39,7 @@ class PollableMixin(object):
     interval, and default_timeout to define the amount of time before it will
     give up.
     """
+
     default_interval = 15
     default_timeout = 3600
 
@@ -64,7 +65,7 @@ class PollableMixin(object):
             elif self.is_finished:
                 return self
             else:
-                events.publish(self, 'wait', events.states.PROGRESS)
+                events.publish(self, "wait", events.states.PROGRESS)
                 time.sleep(interval)
                 self.refresh()
 
@@ -80,7 +81,7 @@ class GeneratedIdentifierMixin(object):
         yet been generated.
         """
         if self.primary_key not in self._data:
-            return 'Unknown'
+            return "Unknown"
         return str(self._data[self.primary_key])
 
 
@@ -190,8 +191,11 @@ class QueryableModelCollection(ModelCollection):
                 items = args[0]
             else:
                 identifier = str(args[0])
-                return self.model_class(self, href='/'.join([self.url, identifier]),
-                                        data={self.model_class.primary_key: identifier})
+                return self.model_class(
+                    self,
+                    href="/".join([self.url, identifier]),
+                    data={self.model_class.primary_key: identifier},
+                )
         else:
             items = args
 
@@ -201,15 +205,22 @@ class QueryableModelCollection(ModelCollection):
             for item in items:
                 if isinstance(item, dict):
                     # we're preloading this object from existing response data
-                    model = self.model_class(self,
-                                             href=item['href'].replace('classifications/', 'classification/'))
+                    model = self.model_class(
+                        self,
+                        href=item["href"].replace(
+                            "classifications/", "classification/"
+                        ),
+                    )
                     model.load(item)
                 else:
                     # we only have the primary id, so create an deflated model
-                    model = self.model_class(self,
-                                             href='/'.join([self.url, item]).replace('classifications/',
-                                                                                     'classification/'),
-                                             data={self.model_class.primary_key: item})
+                    model = self.model_class(
+                        self,
+                        href="/".join([self.url, item]).replace(
+                            "classifications/", "classification/"
+                        ),
+                        data={self.model_class.primary_key: item},
+                    )
                 self._models.append(model)
             return self
         self._is_inflated = False
@@ -219,7 +230,7 @@ class QueryableModelCollection(ModelCollection):
             prefix = self.model_class.data_key
             for (key, value) in kwargs.items():
                 if self.model_class.use_key_prefix:
-                    key = '/'.join([prefix, key])
+                    key = "/".join([prefix, key])
                 if not isinstance(value, six.string_types):
                     value = json.dumps(value)
                 self._filter[key] = value
@@ -234,29 +245,33 @@ class QueryableModelCollection(ModelCollection):
     def url(self):
         """The url for this collection."""
         if self.is_admin_api:
-            pieces = [self.client.base_url, 'api', 'atlas', 'admin']
+            pieces = [self.client.base_url, "api", "atlas", "admin"]
         elif self.parent is None:
             # TODO: differing API Versions?
-            pieces = [self.client.base_url, 'api', 'atlas', 'v2']
+            pieces = [self.client.base_url, "api", "atlas", "v2"]
         else:
             pieces = [self.parent.url]
 
         pieces.append(self.model_class.path)
-        return '/'.join(pieces)
+        return "/".join(pieces)
 
     def inflate(self):
         """Load the collection from the server, if necessary."""
         if not self._is_inflated:
             self.check_version()
             for k, v in self._filter.items():
-                if '[' in v:
+                if "[" in v:
                     try:
                         self._filter[k] = ast.literal_eval(v)
                     except SyntaxError:
                         # In case of DSL Queries, we can specify the list in a query
                         # but this will try to evaluate this as a list and failed as syntax error.
                         self._filter[k] = v
-            LOG.debug("Trying to fetch collection from server - ".format(self.model_class.__class__.__name__))
+            LOG.debug(
+                "Trying to fetch collection from server - ".format(
+                    self.model_class.__class__.__name__
+                )
+            )
             self.load(self.client.get(self.url, params=self._filter))
 
         self._is_inflated = True
@@ -273,39 +288,46 @@ class QueryableModelCollection(ModelCollection):
         In some rare cases, a collection can have an asynchronous request
         triggered.  For those cases, we handle it here.
         """
-        LOG.debug("Parsing the GET response for the collection - {}".format(self.model_class.__class__.__name__))
+        LOG.debug(
+            "Parsing the GET response for the collection - {}".format(
+                self.model_class.__class__.__name__
+            )
+        )
         self._models = []
         if isinstance(response, dict):
             for key in response.keys():
-                model = self.model_class(self, href='')
+                model = self.model_class(self, href="")
                 model.load(response[key])
                 self._models.append(model)
         else:
             for item in response:
-                model = self.model_class(self,
-                                         href=item.get('href'))
+                model = self.model_class(self, href=item.get("href"))
                 model.load(item)
                 self._models.append(model)
 
     def create(self, *args, **kwargs):
         """Add a resource to this collection."""
-        LOG.debug(f"Adding a new resource to the collection {self.__class__.__name__} with the data {kwargs}")
+        LOG.debug(
+            f"Adding a new resource to the collection {self.__class__.__name__} with the data {kwargs}"
+        )
         href = self.url
         if len(args) == 1:
             kwargs[self.model_class.primary_key] = args[0]
-            href = '/'.join([href, args[0]])
-        model = self.model_class(self,
-                                 href=href.replace('classifications/', 'classification/'),
-                                 data=kwargs)
+            href = "/".join([href, args[0]])
+        model = self.model_class(
+            self, href=href.replace("classifications/", "classification/"), data=kwargs
+        )
         model.create(**kwargs)
         self._models.append(model)
         return model
 
     def update(self, **kwargs):
         """Update all resources in this collection."""
-        LOG.debug(f"Updating all resources in the collection "
-                  f"{self.model_class.__class__.__name__} "
-                  f"with the following arguments {kwargs}")
+        LOG.debug(
+            f"Updating all resources in the collection "
+            f"{self.model_class.__class__.__name__} "
+            f"with the following arguments {kwargs}"
+        )
         self.inflate()
         for model in self._models:
             model.update(**kwargs)
@@ -313,7 +335,11 @@ class QueryableModelCollection(ModelCollection):
 
     def delete(self, **kwargs):
         """Delete all resources in this collection."""
-        LOG.debug("Deleting all resources in this collection:  ".format(self.model_class.__class__.__name__))
+        LOG.debug(
+            "Deleting all resources in this collection:  ".format(
+                self.model_class.__class__.__name__
+            )
+        )
         self.inflate()
         for model in self._models:
             model.delete(**kwargs)
@@ -329,12 +355,15 @@ class QueryableModelCollection(ModelCollection):
 
     def check_version(self):
         if (
-                self.model_class.min_version > OLDEST_SUPPORTED_VERSION and self.client.version < self.model_class.min_version):
+            self.model_class.min_version > OLDEST_SUPPORTED_VERSION
+            and self.client.version < self.model_class.min_version
+        ):
             min_version = utils.version_str(self.model_class.min_version)
             curr_version = utils.version_str(self.client.version)
-            raise exceptions.ClientError(message="Cannot access %s in version %s, it was added in "
-                                                 "version %s" % (self.url, curr_version,
-                                                                 min_version))
+            raise exceptions.ClientError(
+                message="Cannot access %s in version %s, it was added in "
+                "version %s" % (self.url, curr_version, min_version)
+            )
 
 
 class DependentModelCollection(ModelCollection):
@@ -361,7 +390,11 @@ class DependentModelCollection(ModelCollection):
         What you start with is all you ever get.  If the parent resource is
         reloaded, it should create new collections for these resources.
         """
-        LOG.debug("Generating the models for this collection:  ".format(self.model_class.__class__.__name__))
+        LOG.debug(
+            "Generating the models for this collection:  ".format(
+                self.model_class.__class__.__name__
+            )
+        )
         items = []
         if len(args) == 1:
             if isinstance(args[0], list):
@@ -371,9 +404,13 @@ class DependentModelCollection(ModelCollection):
                 if len(matches) == 1:
                     return matches[0]
                 elif len(matches) > 1:
-                    error_message = "More than one {0} with {1} '{2}' found in collection" \
-                        .format(self.model_class.__class__.__name__,
-                                self.model_class.primary_key, args[0])
+                    error_message = (
+                        "More than one {0} with {1} '{2}' found in collection".format(
+                            self.model_class.__class__.__name__,
+                            self.model_class.primary_key,
+                            args[0],
+                        )
+                    )
                     LOG.error(error_message)
                     raise ValueError(error_message)
                 return None
@@ -419,18 +456,26 @@ class Model(object):
     model.entity will return a ModelCollection of Entity objects.
 
     """
+
     primary_key = None
     fields = []
     relationships = {}
     min_version = OLDEST_SUPPORTED_VERSION
 
     def __init__(self, parent, data=None):
-        LOG.debug("Generating new model class: {} with the data: {}".format(self.__class__.__name__, data))
+        LOG.debug(
+            "Generating new model class: {} with the data: {}".format(
+                self.__class__.__name__, data
+            )
+        )
         if data is None:
             data = {}
 
-        self._data = dict((key, value) for key, value in six.iteritems(data)
-                          if key in set(self.fields))
+        self._data = dict(
+            (key, value)
+            for key, value in six.iteritems(data)
+            if key in set(self.fields)
+        )
         self.parent = parent
         self.client = parent.client
         self._is_inflated = False
@@ -471,7 +516,8 @@ class Model(object):
 
             if attr not in self._relationship_cache:
                 self._relationship_cache[attr] = rel_class.collection_class(
-                    self.client, rel_class,
+                    self.client,
+                    rel_class,
                     parent=self,
                 )
             return self._relationship_cache[attr]
@@ -587,10 +633,10 @@ class QueryableModel(Model):
 
     def __init__(self, *args, **kwargs):
         self.request = None
-        if 'href' in kwargs:
-            self._href = kwargs.pop('href')
+        if "href" in kwargs:
+            self._href = kwargs.pop("href")
             if self._href is not None:
-                self._href = self._href.replace('classifications/', 'classification/')
+                self._href = self._href.replace("classifications/", "classification/")
         else:
             self._href = None
         self._is_inflating = False
@@ -608,7 +654,12 @@ class QueryableModel(Model):
             return self._href
         if self.identifier:
             #  for some reason atlas does not use classifications here in the path when considering one classification
-            path = '/'.join([self.parent.url.replace('classifications/', 'classficiation/'), self.identifier])
+            path = "/".join(
+                [
+                    self.parent.url.replace("classifications/", "classficiation/"),
+                    self.identifier,
+                ]
+            )
             return path
         raise exceptions.ClientError("Not able to determine object URL")
 
@@ -618,16 +669,22 @@ class QueryableModel(Model):
             if self._is_inflating:
                 #  catch infinite recursion when attempting to inflate
                 #  an object that doesn't have enough data to inflate
-                msg = ("There is not enough data to inflate this object.  "
-                       "Need either an href: {} or a {}: {}")
-                msg = msg.format(self._href, self.primary_key, self._data.get(self.primary_key))
+                msg = (
+                    "There is not enough data to inflate this object.  "
+                    "Need either an href: {} or a {}: {}"
+                )
+                msg = msg.format(
+                    self._href, self.primary_key, self._data.get(self.primary_key)
+                )
                 LOG.error(msg)
                 raise exceptions.ClientError(msg)
 
             self._is_inflating = True
 
             try:
-                params = self.searchParameters if hasattr(self, 'searchParameters') else {}
+                params = (
+                    self.searchParameters if hasattr(self, "searchParameters") else {}
+                )
                 # To keep the method same as the original request. The default is GET
                 self.load(self.client.request(self.method, self.url, **params))
             except Exception:
@@ -669,8 +726,8 @@ class QueryableModel(Model):
         details are returned in a 'Requests' section. We need to store that
         request object so we can poll it until completion.
         """
-        if 'href' in response:
-            self._href = response.pop('href')
+        if "href" in response:
+            self._href = response.pop("href")
         if self.data_key and self.data_key in response:
             self._data.update(response.pop(self.data_key))
             #  preload related object collections, if received
@@ -691,12 +748,14 @@ class QueryableModel(Model):
         some subclasses the identifier is server-side-generated.  Those classes
         have to overload this method to deal with that scenario.
         """
-        self.method = 'post'
+        self.method = "post"
         if self.primary_key in kwargs:
             del kwargs[self.primary_key]
         data = self._generate_input_dict(**kwargs)
-        LOG.info(f"Creating a new instance of the resource "
-                 f"{self.__class__.__name__}, with data: {data}")
+        LOG.info(
+            f"Creating a new instance of the resource "
+            f"{self.__class__.__name__}, with data: {data}"
+        )
         self.load(self.client.post(self.url, data=data))
         return self
 
@@ -715,22 +774,26 @@ class QueryableModel(Model):
         If the request body doesn't follow that pattern, you'll need to overload
         this method to handle your particular case.
         """
-        self.method = 'put'
+        self.method = "put"
         data = self._generate_input_dict(**kwargs)
-        LOG.info(f"Updating an instance of the resource "
-                 f"{self.__class__.__name__}, with data: {data}")
+        LOG.info(
+            f"Updating an instance of the resource "
+            f"{self.__class__.__name__}, with data: {data}"
+        )
         self.load(self.client.put(self.url, data=data))
         return self
 
     @events.evented
     def delete(self, **kwargs):
         """Delete a resource by issuing a DELETE http request against it."""
-        self.method = 'delete'
+        self.method = "delete"
         if len(kwargs) > 0:
             self.load(self.client.delete(self.url, params=kwargs))
         else:
             self.load(self.client.delete(self.url))
-        LOG.info(f"Deleting the resource {self.__class__.__name__} using url: {self.url}")
+        LOG.info(
+            f"Deleting the resource {self.__class__.__name__} using url: {self.url}"
+        )
         self.parent.remove(self)
         return
 
@@ -764,19 +827,25 @@ class QueryableModel(Model):
                     rel_attr = relationship_attrs.get(attribute)
                     if isinstance(rel_attr, list):
                         for index, item in enumerate(rel_attr):
-                            guid = item.guid if hasattr(item, 'guid') else item.get('guid')
+                            guid = (
+                                item.guid if hasattr(item, "guid") else item.get("guid")
+                            )
                             # A check to be on the safe side / and for test cases
                             if guid:
                                 if guid in ref_entities:
-                                    entity.relationshipAttributes[attribute][index] = ref_entities[guid]
+                                    entity.relationshipAttributes[attribute][
+                                        index
+                                    ] = ref_entities[guid]
                                 else:
                                     rel_attribute_ids.add(guid)
                     if isinstance(rel_attr, dict):
-                        guid = rel_attr.get('guid')
+                        guid = rel_attr.get("guid")
                         # A check to be on the safe side / and for test cases
                         if guid:
                             if guid in ref_entities:
-                                entity.relationshipAttributes[attribute] = ref_entities[guid]
+                                entity.relationshipAttributes[attribute] = ref_entities[
+                                    guid
+                                ]
                             else:
                                 rel_attribute_ids.add(guid)
 
@@ -784,8 +853,12 @@ class QueryableModel(Model):
                 _rel_attr_collection = client.entity_bulk(guid=list(rel_attribute_ids))
                 # noinspection PyTypeChecker
                 for rel_entities in _rel_attr_collection:
-                    ref_entities.update(dict((rel_entity.guid, rel_entity._data)
-                                             for rel_entity in rel_entities.entities))
+                    ref_entities.update(
+                        dict(
+                            (rel_entity.guid, rel_entity._data)
+                            for rel_entity in rel_entities.entities
+                        )
+                    )
 
                     # Fix remaining entities recursively
                     entities = _fix_relationships(client, entities, ref_entities, attrs)
@@ -794,4 +867,6 @@ class QueryableModel(Model):
 
         if self.entities and isinstance(self.entities, DependentModelCollection):
             referred_entities = self.referredEntities or dict()
-            return _fix_relationships(self.client, self.entities, referred_entities, attributes)
+            return _fix_relationships(
+                self.client, self.entities, referred_entities, attributes
+            )

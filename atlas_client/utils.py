@@ -19,21 +19,24 @@ try:
 except ImportError:
     from logging import Handler
 
-
     class NullHandler(Handler):
         def emit(self, record):
             pass
 
+
 DEFAULT_PORTS = {
-    'http': 80,
-    'https': 443,
+    "http": 80,
+    "https": 443,
 }
 
-DEFAULT_TABLE_QN_REGEX = re.compile(r"""
+DEFAULT_TABLE_QN_REGEX = re.compile(
+    r"""
     ^(?P<db_name>.*?)\.(?P<table_name>.*)@(?P<cluster_name>.*?)$
-    """, re.X)
+    """,
+    re.X,
+)
 
-DEFAULT_DB_CLUSTER = 'default'
+DEFAULT_DB_CLUSTER = "default"
 
 
 def normalize_underscore_case(name):
@@ -43,9 +46,9 @@ def normalize_underscore_case(name):
     'Host Components'
     """
     normalized = name.lower()
-    normalized = re.sub(r'_(\w)',
-                        lambda match: ' ' + match.group(1).upper(),
-                        normalized)
+    normalized = re.sub(
+        r"_(\w)", lambda match: " " + match.group(1).upper(), normalized
+    )
     return normalized[0].upper() + normalized[1:]
 
 
@@ -54,9 +57,9 @@ def normalize_camel_case(name):
 
     i.e. 'camelCase' or 'CamelCase' becomes 'Camel Case'
     """
-    normalized = re.sub('([a-z])([A-Z])',
-                        lambda match: ' '.join([match.group(1), match.group(2)]),
-                        name)
+    normalized = re.sub(
+        "([a-z])([A-Z])", lambda match: " ".join([match.group(1), match.group(2)]), name
+    )
     return normalized[0].upper() + normalized[1:]
 
 
@@ -66,7 +69,7 @@ def version_tuple(version):
     Should be returned in the form: (major, minor, release).
     """
     if isinstance(version, str):
-        return tuple(int(x) for x in version.split('.'))
+        return tuple(int(x) for x in version.split("."))
     elif isinstance(version, tuple):
         return version
     else:
@@ -81,7 +84,7 @@ def version_str(version):
     if isinstance(version, str):
         return version
     elif isinstance(version, tuple):
-        return '.'.join([str(int(x)) for x in version])
+        return ".".join([str(int(x)) for x in version])
     else:
         raise ValueError("Invalid version: %s" % version)
 
@@ -92,15 +95,17 @@ def generate_http_basic_token(username, password):
 
     Returns a token string (not a byte)
     """
-    token = base64.b64encode('{}:{}'.format(username, password).encode('utf-8')).decode('utf-8')
+    token = base64.b64encode("{}:{}".format(username, password).encode("utf-8")).decode(
+        "utf-8"
+    )
     return token
 
 
 def generate_base_url(host, protocol=None, port=None):
-    matches = re.match(r'^(([^:]+)://)?([^/:]+)(:([^/]+))?', host)
+    matches = re.match(r"^(([^:]+)://)?([^/:]+)(:([^/]+))?", host)
     (_, derived_proto, derived_host, _, derived_port) = matches.groups()
     if derived_proto is None:
-        derived_proto = protocol or 'http'
+        derived_proto = protocol or "http"
     if derived_proto not in DEFAULT_PORTS:
         raise ValueError()
 
@@ -110,9 +115,9 @@ def generate_base_url(host, protocol=None, port=None):
     derived_port = int(derived_port)
 
     url_params = {
-        'protocol': derived_proto,
-        'host': derived_host,
-        'port': str(derived_port),
+        "protocol": derived_proto,
+        "host": derived_host,
+        "port": str(derived_port),
     }
     return "{protocol}://{host}:{port}".format(**url_params)
 
@@ -133,29 +138,38 @@ def parse_table_qualified_name(qualified_name, qn_regex=DEFAULT_TABLE_QN_REGEX):
     _regex_result = apply_qn_regex(qualified_name, qn_regex)
 
     if not _regex_result:
-        qn_regex = re.compile(r"""
+        qn_regex = re.compile(
+            r"""
         ^(?P<table_name>.*)@(?P<cluster_name>.*?)$
-        """, re.X)
+        """,
+            re.X,
+        )
         _regex_result = apply_qn_regex(qualified_name, qn_regex)
 
     if not _regex_result:
-        qn_regex = re.compile(r"""
+        qn_regex = re.compile(
+            r"""
         ^(?P<db_name>.*?)\.(?P<table_name>.*)$
-        """, re.X)
+        """,
+            re.X,
+        )
         _regex_result = apply_qn_regex(qualified_name, qn_regex)
 
     if not _regex_result:
-        qn_regex = re.compile(r"""
+        qn_regex = re.compile(
+            r"""
         ^(?P<table_name>.*)$
-        """, re.X)
+        """,
+            re.X,
+        )
         _regex_result = apply_qn_regex(qualified_name, qn_regex)
 
     _regex_result = _regex_result.groupdict()
 
     qn_dict = {
-        'table_name': _regex_result.get('table_name', qualified_name),
-        'db_name': _regex_result.get('db_name', DEFAULT_DB_CLUSTER),
-        'cluster_name': _regex_result.get('cluster_name', DEFAULT_DB_CLUSTER),
+        "table_name": _regex_result.get("table_name", qualified_name),
+        "db_name": _regex_result.get("db_name", DEFAULT_DB_CLUSTER),
+        "cluster_name": _regex_result.get("cluster_name", DEFAULT_DB_CLUSTER),
     }
 
     return qn_dict
@@ -172,10 +186,10 @@ def make_table_qualified_name(table_name, cluster=None, db=None):
     """
     qualified_name = table_name
     if db and db != DEFAULT_DB_CLUSTER:
-        qualified_name = '{}.{}'.format(db, qualified_name)
+        qualified_name = "{}.{}".format(db, qualified_name)
 
     if cluster and cluster != DEFAULT_DB_CLUSTER:
-        qualified_name = '{}@{}'.format(qualified_name, cluster)
+        qualified_name = "{}@{}".format(qualified_name, cluster)
 
     return qualified_name
 

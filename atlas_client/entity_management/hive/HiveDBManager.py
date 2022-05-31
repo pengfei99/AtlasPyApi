@@ -14,7 +14,9 @@ import json
 
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.HiveDBEntityGenerator import HiveDBEntityGenerator
+from atlas_client.entity_source_generation.HiveDBEntityGenerator import (
+    HiveDBEntityGenerator,
+)
 from atlas_client.log_manager import LogManager
 
 my_logger = LogManager(__name__).get_logger()
@@ -25,9 +27,12 @@ class HiveDBManager(EntityManager):
     def __init__(self, atlas_client: Atlas):
         super().__init__(atlas_client)
 
-    def create_entity(self, name: str, cluster_name: str, description: str, **kwargs) -> bool:
-        hive_db_json_source = HiveDBEntityGenerator.generate_hive_db_json_source(name, cluster_name,
-                                                                                 description, **kwargs)
+    def create_entity(
+        self, name: str, cluster_name: str, description: str, **kwargs
+    ) -> bool:
+        hive_db_json_source = HiveDBEntityGenerator.generate_hive_db_json_source(
+            name, cluster_name, description, **kwargs
+        )
 
         hive_db_json_source = json.loads(hive_db_json_source)
         try:

@@ -36,4 +36,8 @@ def init_config(config_file_path: str) -> dict:
 # jinja2 util function, it takes a jinja2 template and a dict of attributes, then merges them to generate a target file
 def populate_template(file_path: str, context: dict) -> str:
     path, file_name = os.path.split(file_path)
-    return jinja2.Environment(loader=jinja2.FileSystemLoader(path or './')).get_template(file_name).render(context)
+    return (
+        jinja2.Environment(loader=jinja2.FileSystemLoader(path or "./"))
+        .get_template(file_name)
+        .render(context)
+    )

@@ -14,7 +14,9 @@ import json
 
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.HiveTableEntityGenerator import HiveTableEntityGenerator
+from atlas_client.entity_source_generation.HiveTableEntityGenerator import (
+    HiveTableEntityGenerator,
+)
 from atlas_client.log_manager import LogManager
 
 my_logger = LogManager(__name__).get_logger()
@@ -25,9 +27,14 @@ class HiveTableManager(EntityManager):
     def __init__(self, atlas_client: Atlas):
         super().__init__(atlas_client)
 
-    def create_entity(self, table_name: str, db_qualified_name: str, description: str, **kwargs) -> bool:
-        hive_table_json_source = HiveTableEntityGenerator.generate_hive_table_json_source(table_name, db_qualified_name,
-                                                                                          description, **kwargs)
+    def create_entity(
+        self, table_name: str, db_qualified_name: str, description: str, **kwargs
+    ) -> bool:
+        hive_table_json_source = (
+            HiveTableEntityGenerator.generate_hive_table_json_source(
+                table_name, db_qualified_name, description, **kwargs
+            )
+        )
 
         hive_table_json_source = json.loads(hive_table_json_source)
         try:
@@ -36,5 +43,7 @@ class HiveTableManager(EntityManager):
             my_logger.error(f"Hive table entity {table_name} creation failed. {e}")
             return False
         else:
-            my_logger.info(f"Hive table entity {table_name} is created in db {db_qualified_name}")
+            my_logger.info(
+                f"Hive table entity {table_name} is created in db {db_qualified_name}"
+            )
             return True

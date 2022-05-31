@@ -13,18 +13,28 @@
 import json
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.S3PsDirEntityGenerator import S3PsDirEntityGenerator
+from atlas_client.entity_source_generation.S3PsDirEntityGenerator import (
+    S3PsDirEntityGenerator,
+)
 
 
 class S3PsDirManager(EntityManager):
     def __init__(self, atlas_client: Atlas):
         super().__init__(atlas_client)
 
-    def create_entity(self, name: str, qualified_name: str, bucket_qualified_name: str, object_prefix: str,
-                      **kwargs) -> bool:
-        s3_ps_dir_json_source = S3PsDirEntityGenerator.generate_s3_ps_dir_entity_json_source(name, qualified_name,
-                                                                                             bucket_qualified_name,
-                                                                                             object_prefix, **kwargs)
+    def create_entity(
+        self,
+        name: str,
+        qualified_name: str,
+        bucket_qualified_name: str,
+        object_prefix: str,
+        **kwargs
+    ) -> bool:
+        s3_ps_dir_json_source = (
+            S3PsDirEntityGenerator.generate_s3_ps_dir_entity_json_source(
+                name, qualified_name, bucket_qualified_name, object_prefix, **kwargs
+            )
+        )
 
         s3_ps_dir_json_source = json.loads(s3_ps_dir_json_source)
         try:

@@ -25,35 +25,36 @@ from atlas_client.log_manager import LogManager
 LOG = LogManager(__name__).get_logger()
 
 # this defines where the Atlas client delegates to for actual logic
-ENTRY_POINTS = {'entity_guid': models.EntityGuid,
-                'typedefs': models.TypeDef,
-                'entity_post': models.EntityPost,
-                'entity_bulk': models.EntityBulk,
-                'entity_bulk_classification': models.EntityBulkClassification,
-                'entity_unique_attribute': models.EntityUniqueAttribute,
-                'typedefs_headers': models.TypeDefHeader,
-                'classificationdef_guid': models.ClassificationDefGuid,
-                'classificationdef_name': models.ClassificationDefName,
-                'entitydef_guid': models.EntityDefGuid,
-                'entitydef_name': models.EntityDefName,
-                'enumdef_guid': models.EnumDefGuid,
-                'enumdef_name': models.EnumDefName,
-                'relationshipdef_guid': models.RelationshipDefGuid,
-                'relationshipdef_name': models.RelationshipDefName,
-                'structdef_guid': models.StructDefGuid,
-                'structdef_name': models.StructDefName,
-                'typedef_guid': models.TypeDefGuid,
-                'typedef_name': models.TypeDefName,
-                'lineage_guid': models.LineageGuid,
-                'search_attribute': models.SearchAttribute,
-                'search_basic': models.SearchBasic,
-                'search_dsl': models.SearchDsl,
-                'search_fulltext': models.SearchFulltext,
-                'relationship': models.Relationship,
-                'relationship_guid': models.RelationshipGuid,
-                'search_saved': models.SearchSaved,
-                'admin_metrics': models.AdminMetrics
-                }
+ENTRY_POINTS = {
+    "entity_guid": models.EntityGuid,
+    "typedefs": models.TypeDef,
+    "entity_post": models.EntityPost,
+    "entity_bulk": models.EntityBulk,
+    "entity_bulk_classification": models.EntityBulkClassification,
+    "entity_unique_attribute": models.EntityUniqueAttribute,
+    "typedefs_headers": models.TypeDefHeader,
+    "classificationdef_guid": models.ClassificationDefGuid,
+    "classificationdef_name": models.ClassificationDefName,
+    "entitydef_guid": models.EntityDefGuid,
+    "entitydef_name": models.EntityDefName,
+    "enumdef_guid": models.EnumDefGuid,
+    "enumdef_name": models.EnumDefName,
+    "relationshipdef_guid": models.RelationshipDefGuid,
+    "relationshipdef_name": models.RelationshipDefName,
+    "structdef_guid": models.StructDefGuid,
+    "structdef_name": models.StructDefName,
+    "typedef_guid": models.TypeDefGuid,
+    "typedef_name": models.TypeDefName,
+    "lineage_guid": models.LineageGuid,
+    "search_attribute": models.SearchAttribute,
+    "search_basic": models.SearchBasic,
+    "search_dsl": models.SearchDsl,
+    "search_fulltext": models.SearchFulltext,
+    "relationship": models.Relationship,
+    "relationship_guid": models.RelationshipGuid,
+    "search_saved": models.SearchSaved,
+    "admin_metrics": models.AdminMetrics,
+}
 
 
 class Atlas(object):
@@ -63,17 +64,35 @@ class Atlas(object):
     use one of the entry points to start hitting Atlas object collections.
     """
 
-    def __init__(self, host: str, port: int = None, username: str = None, password: str = None, oidc_token: str = None,
-                 identifier: str = None, protocol: str = None, validate_ssl: bool = True,
-                 timeout=10, max_retries=5, auth=None):
+    def __init__(
+        self,
+        host: str,
+        port: int = None,
+        username: str = None,
+        password: str = None,
+        oidc_token: str = None,
+        identifier: str = None,
+        protocol: str = None,
+        validate_ssl: bool = True,
+        timeout=10,
+        max_retries=5,
+        auth=None,
+    ):
         self.oidc_token = oidc_token
         self.base_url = utils.generate_base_url(host, port=port, protocol=protocol)
         if identifier is None:
-            identifier = 'python-atlasclient'
-        self.client = HttpClient(host=self.base_url, username=username,
-                                 password=password, identifier=identifier, oidc_token=oidc_token,
-                                 validate_ssl=validate_ssl, timeout=timeout,
-                                 max_retries=max_retries, auth=auth)
+            identifier = "python-atlasclient"
+        self.client = HttpClient(
+            host=self.base_url,
+            username=username,
+            password=password,
+            identifier=identifier,
+            oidc_token=oidc_token,
+            validate_ssl=validate_ssl,
+            timeout=timeout,
+            max_retries=max_retries,
+            auth=auth,
+        )
 
         self._version = None
 
@@ -87,8 +106,11 @@ class Atlas(object):
         if self.version < base.OLDEST_SUPPORTED_VERSION:
             raise exceptions.ClientError(
                 "Version %s unsupported, must be %s or higher"
-                % (utils.version_str(self.version),
-                   utils.version_str(base.OLDEST_SUPPORTED_VERSION)))
+                % (
+                    utils.version_str(self.version),
+                    utils.version_str(base.OLDEST_SUPPORTED_VERSION),
+                )
+            )
         return
 
     def __getattr__(self, attr):
@@ -103,30 +125,38 @@ class Atlas(object):
         raise AttributeError(attr)
 
     def purge_entity_by_guid(self, guid: str):
-        headers = {'Authorization': self.client.auth_header,
-                   "Content-Type": "application/json",
-                   "Accept": "application/json"}
+        headers = {
+            "Authorization": self.client.auth_header,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
         purge_url = f"{self.base_url}/api/atlas/v2/admin/purge/"
         response = requests.put(purge_url, data=guid, headers=headers)
         return response
 
-    def get_guid_by_qualified_name(self, entity_type_name: str, entity_qualified_name, **kwargs):
-        if 'limit' in kwargs and isinstance(kwargs['limit'], int):
-            input_limit = kwargs['limit']
+    def get_guid_by_qualified_name(
+        self, entity_type_name: str, entity_qualified_name, **kwargs
+    ):
+        if "limit" in kwargs and isinstance(kwargs["limit"], int):
+            input_limit = kwargs["limit"]
         else:
             input_limit = 10
-        if 'offset' in kwargs and isinstance(kwargs['offset'], int):
-            input_offset = kwargs['offset']
+        if "offset" in kwargs and isinstance(kwargs["offset"], int):
+            input_offset = kwargs["offset"]
         else:
             input_offset = 0
-        headers = {'Authorization': self.client.auth_header,
-                   "Content-Type": "application/json",
-                   "Accept": "application/json"}
-        params = {"attrName": "qualifiedName",
-                  "attrValuePrefix": f"{entity_qualified_name}",
-                  "limit": f"{input_limit}",
-                  "offset": f"{input_offset}",
-                  "typeName": f"{entity_type_name}"}
+        headers = {
+            "Authorization": self.client.auth_header,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        }
+        params = {
+            "attrName": "qualifiedName",
+            "attrValuePrefix": f"{entity_qualified_name}",
+            "limit": f"{input_limit}",
+            "offset": f"{input_offset}",
+            "typeName": f"{entity_type_name}",
+        }
         search_url = f"{self.base_url}/api/atlas/v2/search/attribute"
         response = requests.get(f"{search_url}", params=params, headers=headers)
         # convert response json text to python dict
@@ -151,20 +181,34 @@ class HttpClient(object):
     cases do exist either due to Atlas bugs or other mitigating circumstances.
     """
 
-    def __init__(self, host, identifier, username=None, password=None, oidc_token=None, validate_ssl=True,
-                 timeout=10, max_retries=5, auth=None):
+    def __init__(
+        self,
+        host,
+        identifier,
+        username=None,
+        password=None,
+        oidc_token=None,
+        validate_ssl=True,
+        timeout=10,
+        max_retries=5,
+        auth=None,
+    ):
         if oidc_token:
-            self.auth_header = f'Bearer {oidc_token}'
+            self.auth_header = f"Bearer {oidc_token}"
         elif username and password:
-            basic_token = utils.generate_http_basic_token(username=username, password=password)
-            self.auth_header = f'Basic {basic_token}'
+            basic_token = utils.generate_http_basic_token(
+                username=username, password=password
+            )
+            self.auth_header = f"Basic {basic_token}"
         else:
             raise BadHttpAuthArg
         self.request_params = {
-            'headers': {'X-Requested-By': identifier,
-                        'Authorization': self.auth_header},
-            'verify': validate_ssl,
-            'timeout': timeout,
+            "headers": {
+                "X-Requested-By": identifier,
+                "Authorization": self.auth_header,
+            },
+            "verify": validate_ssl,
+            "timeout": timeout,
         }
         # automatically retry requests on connection errors
         self.session = requests.Session()
@@ -179,21 +223,21 @@ class HttpClient(object):
         params.update(kwargs)
 
         if content_type is not None:
-            params['headers']['Content-type'] = content_type
+            params["headers"]["Content-type"] = content_type
         else:
-            params['headers']['Content-type'] = 'application/json'
-        LOG.debug("Request headers: %s", params['headers'])
+            params["headers"]["Content-type"] = "application/json"
+        LOG.debug("Request headers: %s", params["headers"])
 
-        if 'data' in params and isinstance(params['data'], dict):
-            params['data'] = json.dumps(params['data'], cls=AtlasJsonEncoder)
-            LOG.debug("Request body: %s", params['data'])
-        elif 'data' in params and isinstance(params['data'], str):
-            params['data'] = json.dumps(params['data'])
-        elif 'data' in params and isinstance(params['data'], list):
-            params['data'] = json.dumps(params['data'])
+        if "data" in params and isinstance(params["data"], dict):
+            params["data"] = json.dumps(params["data"], cls=AtlasJsonEncoder)
+            LOG.debug("Request body: %s", params["data"])
+        elif "data" in params and isinstance(params["data"], str):
+            params["data"] = json.dumps(params["data"])
+        elif "data" in params and isinstance(params["data"], list):
+            params["data"] = json.dumps(params["data"])
 
         LOG.debug(f"Requesting Atlas with the '{method}' method.")
-        if params.get('data'):
+        if params.get("data"):
             LOG.debug(f"With the following data: {params['data']}")
 
         response = requests_method(url, **params)
@@ -205,22 +249,30 @@ class HttpClient(object):
         if response.status_code != 204 and len(response.content):
             LOG.debug("Response: %s", response.json())
 
-        if response.headers.get('content-length') is None:
+        if response.headers.get("content-length") is None:
             # Log bad methods so we can report them
-            LOG.debug("Missing content-length for %s %s: %s", method,
-                      url, response.headers.get('content-type'))
+            LOG.debug(
+                "Missing content-length for %s %s: %s",
+                method,
+                url,
+                response.headers.get("content-type"),
+            )
 
         # there is no consistent way to determine response type
         # so assume json if it's not an empty string
         if response.text:
-            if response.headers.get('content-type') == 'application/x-ustar':
+            if response.headers.get("content-type") == "application/x-ustar":
                 tarstream = io.BytesIO(response.content)
                 tarstream.seek(0)
                 return tarfile.open(fileobj=tarstream)
-            elif 'application/json' not in response.headers.get('content-type'):
+            elif "application/json" not in response.headers.get("content-type"):
                 # Log bad methods so we can report them
-                LOG.debug("Wrong response content-type for %s %s: %s", method,
-                          url, response.headers.get('content-type'))
+                LOG.debug(
+                    "Wrong response content-type for %s %s: %s",
+                    method,
+                    url,
+                    response.headers.get("content-type"),
+                )
             return response.json()
 
         return {}

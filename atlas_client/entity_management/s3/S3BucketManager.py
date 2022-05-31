@@ -14,16 +14,21 @@ import json
 
 from atlas_client.client import Atlas
 from atlas_client.entity_management.EntityManager import EntityManager
-from atlas_client.entity_source_generation.S3BucketEntityGenerator import S3BucketEntityGenerator
+from atlas_client.entity_source_generation.S3BucketEntityGenerator import (
+    S3BucketEntityGenerator,
+)
 
 
 class S3BucketManager(EntityManager):
     def __init__(self, atlas_client: Atlas):
         super().__init__(atlas_client)
 
-    def create_entity(self, name: str, domain: str, qualified_name: str, description: str, **kwargs) -> bool:
-        s3_bucket_json_source = S3BucketEntityGenerator.generate_s3_bucket_json_source(name, domain, qualified_name,
-                                                                                       description, **kwargs)
+    def create_entity(
+        self, name: str, domain: str, qualified_name: str, description: str, **kwargs
+    ) -> bool:
+        s3_bucket_json_source = S3BucketEntityGenerator.generate_s3_bucket_json_source(
+            name, domain, qualified_name, description, **kwargs
+        )
 
         s3_bucket_json_source = json.loads(s3_bucket_json_source)
         try:

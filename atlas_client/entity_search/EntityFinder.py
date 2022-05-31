@@ -9,15 +9,26 @@ class EntityFinder:
     def __init__(self, atlas_client: Atlas):
         self.client = atlas_client
 
-    def search_by_attribute(self, type_name: str, attribute_name: str, attribute_value: str) -> dict:
-        params = {'typeName': type_name, 'attrName': attribute_name, 'attrValue': attribute_value, 'offset': '0',
-                  'limit': '10'}
+    def search_by_attribute(
+        self, type_name: str, attribute_name: str, attribute_value: str
+    ) -> dict:
+        params = {
+            "typeName": type_name,
+            "attrName": attribute_name,
+            "attrValue": attribute_value,
+            "offset": "0",
+            "limit": "10",
+        }
         LOG.debug(f"Search query params {params}")
         return self.client.search_attribute(**params)
 
     def search_full_text(self, type_name: str, attribute_value: str) -> dict:
-        params = {'typeName': type_name, 'attrValue': attribute_value, 'offset': '0',
-                  'limit': '10'}
+        params = {
+            "typeName": type_name,
+            "attrValue": attribute_value,
+            "offset": "0",
+            "limit": "10",
+        }
         LOG.debug(f"Search query params {params}")
         return self.client.search_basic(**params)
 
@@ -51,5 +62,5 @@ class EntityFinder:
         else:
             for entity in next(iter(search_results)).entities:
                 guid_list.append(entity.guid)
-                name_list.append(entity.attributes['name'])
+                name_list.append(entity.attributes["name"])
         return guid_list, name_list
