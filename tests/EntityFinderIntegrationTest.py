@@ -13,13 +13,21 @@ def full_text_search_test(entity_finder):
 
 
 def get_guid_by_qualified_name_test(entity_finder):
-    type_name = "hive_table"
-    qualified_name = "user-pengfei@default.individus_test"
+    type_name = "DataSet"
+    qualified_name = "pengfei@test"
     res1 = entity_finder.get_guid_by_qualified_name(type_name, qualified_name)
     print(f"qualified name search result: {res1}")
 
 
 def main():
+    """
+    This script tests the two method of the EntityFinder
+    - search_full_text
+    - get_guid_by_qualified_name
+
+    As we don't find a way to mock Atlas server in github, so we exclude these tests from the pytest framework.
+    Otherwise, the github ci will fail
+    """
     local = False
     # config for atlas client
 
