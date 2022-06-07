@@ -14,7 +14,7 @@ def test_generate_hive_db_json_source():
                                                  'qualifiedName': 'insee.fr@insee-data',
                                                  'displayName': 'insee-data',
                                                  'clusterName': 'insee.fr',
-                                                 'name': 'insee-data',
+                                                 'name': 'insee.fr@insee-data',
                                                  'description': 'this is a test',
                                                  'location': 'None', 'parameters': None},
                                   'isIncomplete': False, 'status': 'ACTIVE',
