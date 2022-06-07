@@ -3,6 +3,22 @@ from atlaspyapi.entity_search.EntityFinder import EntityFinder
 from my_secrets import secret
 
 
+def full_text_search_test(entity_finder):
+    type_name = "hive_table"
+    qualified_name = "user-pengfei@default.individus_test"
+    res = entity_finder.search_full_text(type_name, qualified_name)
+    EntityFinder.show_search_results(res)
+    guids = EntityFinder.get_result_entity_guid_list(res)
+    print(f"full text search result: {guids}")
+
+
+def get_guid_by_qualified_name_test(entity_finder):
+    type_name = "hive_table"
+    qualified_name = "user-pengfei@default.individus_test"
+    res1 = entity_finder.get_guid_by_qualified_name(type_name, qualified_name)
+    print(f"qualified name search result: {res1}")
+
+
 def main():
     local = False
     # config for atlas client
@@ -19,10 +35,8 @@ def main():
         oidc_token = secret.oidc_token
         atlas_client = Atlas(atlas_prod_hostname, atlas_prod_port, oidc_token=oidc_token)
     entity_finder = EntityFinder(atlas_client)
-    t_guid = entity_finder.get_guid_by_qualified_name("hive_table", "default.students")
-    print(t_guid)
-    d_guid = entity_finder.get_guid_by_qualified_name("hive_db", "default")
-    print(d_guid)
+    # full_text_search_test(entity_finder)
+    get_guid_by_qualified_name_test(entity_finder)
 
 
 if __name__ == "__main__":

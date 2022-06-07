@@ -65,18 +65,18 @@ class Atlas(object):
     """
 
     def __init__(
-        self,
-        host: str,
-        port: int = None,
-        username: str = None,
-        password: str = None,
-        oidc_token: str = None,
-        identifier: str = None,
-        protocol: str = None,
-        validate_ssl: bool = True,
-        timeout=10,
-        max_retries=5,
-        auth=None,
+            self,
+            host: str,
+            port: int = None,
+            username: str = None,
+            password: str = None,
+            oidc_token: str = None,
+            identifier: str = None,
+            protocol: str = None,
+            validate_ssl: bool = True,
+            timeout=10,
+            max_retries=5,
+            auth=None,
     ):
         self.oidc_token = oidc_token
         self.base_url = utils.generate_base_url(host, port=port, protocol=protocol)
@@ -132,10 +132,11 @@ class Atlas(object):
         }
         purge_url = f"{self.base_url}/api/atlas/v2/admin/purge/"
         response = requests.put(purge_url, data=guid, headers=headers)
+        LOG.debug(f"Purge request response: {response}")
         return response
 
     def get_guid_by_qualified_name(
-        self, entity_type_name: str, entity_qualified_name, **kwargs
+            self, entity_type_name: str, entity_qualified_name, **kwargs
     ):
         if "limit" in kwargs and isinstance(kwargs["limit"], int):
             input_limit = kwargs["limit"]
@@ -161,9 +162,11 @@ class Atlas(object):
         response = requests.get(f"{search_url}", params=params, headers=headers)
         # convert response json text to python dict
         response_dict = json.loads(response.text)
+        LOG.debug(f"Response dict : {response_dict}")
         guid = None
         try:
-            guid = response_dict.get("entities").get(0).get("guid")
+            guid = response_dict.get("entities")[0].get("guid")
+            LOG.debug("Extract the first guid:{guid} ")
         except Exception as e:
             LOG.exception(f"Entity that you are looking for does not exist. {e}")
         return guid
@@ -182,16 +185,16 @@ class HttpClient(object):
     """
 
     def __init__(
-        self,
-        host,
-        identifier,
-        username=None,
-        password=None,
-        oidc_token=None,
-        validate_ssl=True,
-        timeout=10,
-        max_retries=5,
-        auth=None,
+            self,
+            host,
+            identifier,
+            username=None,
+            password=None,
+            oidc_token=None,
+            validate_ssl=True,
+            timeout=10,
+            max_retries=5,
+            auth=None,
     ):
         if oidc_token:
             self.auth_header = f"Bearer {oidc_token}"
