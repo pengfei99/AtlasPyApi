@@ -12,6 +12,7 @@
 
 from abc import ABC, abstractmethod
 from typing import KeysView
+
 from requests.models import Response
 
 from atlaspyapi.client import Atlas
@@ -43,7 +44,7 @@ class EntityManager(ABC):
         return EntityManager.get_entity_attributes(entity).keys()
 
     def update_entity(
-        self, guid: str, attribute_name: str, attribute_value: str
+            self, guid: str, attribute_name: str, attribute_value: str
     ) -> Response:
         current_entity_obj = self.client.entity_guid(guid)
         current_entity_obj.entity["attributes"][attribute_name] = attribute_value
@@ -54,4 +55,6 @@ class EntityManager(ABC):
         return current_entity_obj.delete()
 
     def purge_entity(self, guid: str) -> Response:
-        return self.client.purge_entity_by_guid(guid)
+        guids = list()
+        guids.append(guid)
+        return self.client.purge_entity_by_guid(guids)
