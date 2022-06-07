@@ -15,6 +15,7 @@ import functools
 import io
 import json
 import tarfile
+from typing import List
 
 import requests
 
@@ -124,14 +125,22 @@ class Atlas(object):
 
         raise AttributeError(attr)
 
-    def purge_entity_by_guid(self, guid: str):
+    def purge_entity_by_guid(self, guids: List[str]):
+        """
+        This method takes a list of GUIDs for Atlas entities, each entity in the list is purged from Atlas if the
+        entity is already marked as deleted. This call requires a user account with Atlas administrator privileges.
+        The successfully purged entities are listed in the audit log, referenced by their GUIDs.
+
+        param guids: The list of guids which we want to delete
+        """
+        LOG.debug("Call purge entity by guid")
         headers = {
             "Authorization": self.client.auth_header,
             "Content-Type": "application/json",
             "Accept": "application/json",
         }
-        purge_url = f"{self.base_url}/api/atlas/v2/admin/purge/"
-        response = requests.put(purge_url, data=guid, headers=headers)
+        purge_url = f"{self.base_url}/api/atlas/admin/purge/"
+        response = requests.put(purge_url, data=json.dumps(guids), headers=headers)
         LOG.debug(f"Purge request response: {response}")
         return response
 
