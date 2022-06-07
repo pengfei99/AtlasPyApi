@@ -25,12 +25,12 @@ def hive_table_creation_test(hive_table):
 
 
 def hive_table_deletion_test(hive_table):
-    db_guid = "12ba0da3-4c50-4888-83a0-5c42fc298e27"
+    db_guid = "893f55d2-ffe2-4340-a2a0-262da533ae9a"
     hive_table.delete_entity(db_guid)
 
 
 def hive_table_purge_test(hive_table):
-    db_guid = "12ba0da3-4c50-4888-83a0-5c42fc298e27"
+    db_guid = "893f55d2-ffe2-4340-a2a0-262da533ae9a"
     hive_table.purge_entity(db_guid)
 
 
@@ -74,7 +74,7 @@ def main():
 
     # test hive table operation
     # hive_table_creation_test(hive_table)
-    # hive_table_deletion_test(hive_table)
+    hive_table_deletion_test(hive_table)
     hive_table_purge_test(hive_table)
 
     # test hive column operation

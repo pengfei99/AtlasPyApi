@@ -13,8 +13,8 @@ def full_text_search_test(entity_finder):
 
 
 def get_guid_by_qualified_name_test(entity_finder):
-    type_name = "DataSet"
-    qualified_name = "pengfei@test"
+    type_name = "hdfs_path"
+    qualified_name = "test"
     res1 = entity_finder.get_guid_by_qualified_name(type_name, qualified_name)
     print(f"qualified name search result: {res1}")
 
