@@ -76,7 +76,7 @@ class HiveDBEntityGenerator:
             "create_time": create_time,
             "update_time": update_time,
             "owner": owner,
-            "display_name": qualified_name,
+            "display_name": name,
             "location": location,
         }
         entity_source = populate_template(template_file_path, context)
