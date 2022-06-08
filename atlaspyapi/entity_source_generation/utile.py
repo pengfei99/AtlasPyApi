@@ -19,7 +19,11 @@ import jinja2
 
 # get current time
 def current_milli_time():
-    return int(round(time.time()))
+    """
+    Atlas use unix epoch time stamp (in milliseconds) to store all time related fields (e.g. creation time, ).
+    This function returns current time in unix epoch ts (milliseconds)
+    """
+    return int(round(time.time()))*1000
 
 
 # set up config file
