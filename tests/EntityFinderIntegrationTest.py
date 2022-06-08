@@ -5,7 +5,7 @@ from my_secrets import secret
 
 def full_text_search_test(entity_finder):
     type_name = "hive_table"
-    qualified_name = "user-pengfei@default.individus_test"
+    qualified_name = "user-tm8enk@default.sirene"
     res = entity_finder.search_full_text(type_name, qualified_name)
     EntityFinder.show_search_results(res)
     guids = EntityFinder.get_result_entity_guid_list(res)
@@ -13,8 +13,8 @@ def full_text_search_test(entity_finder):
 
 
 def get_guid_by_qualified_name_test(entity_finder):
-    type_name = "hdfs_path"
-    qualified_name = "test"
+    type_name = "hive_table"
+    qualified_name = "user-tm8enk@default.individu_reg"
     res1 = entity_finder.get_guid_by_qualified_name(type_name, qualified_name)
     print(f"qualified name search result: {res1}")
 

@@ -6,7 +6,7 @@ from my_secrets import secret
 
 
 def hive_db_creation_test(hive_db):
-    hive_db.create_entity("pengfei-stock", "pengfei.org", "database for my stock market", owner="pliu",
+    hive_db.create_entity("stock", "user-pengfei", "database for my stock market", owner="pliu",
                           location="pengfei.org")
 
 
@@ -21,7 +21,7 @@ def hive_db_purge_test(hive_db):
 
 
 def hive_table_creation_test(hive_table):
-    hive_table.create_entity("favorite", "pengfei.org@pengfei-stock", "favorite stock")
+    hive_table.create_entity("favorite", "user-pengfei@stock", "favorite stock")
 
 
 def hive_table_deletion_test(hive_table):
@@ -30,7 +30,7 @@ def hive_table_deletion_test(hive_table):
 
 
 def hive_table_purge_test(hive_table):
-    db_guid = "893f55d2-ffe2-4340-a2a0-262da533ae9a"
+    db_guid = "a12d1fb7-b8bd-45e9-82d3-6ed222a1146f"
     hive_table.purge_entity(db_guid)
 
 
@@ -45,7 +45,7 @@ def hive_column_deletion_test(hive_column):
 
 
 def hive_column_purge_test(hive_column):
-    db_guid = "70a3a0cc-aa34-4df0-800f-2560b02e6e38"
+    db_guid = "5d1315f2-cee8-4dd0-a2ee-da67139b646e"
     hive_column.purge_entity(db_guid)
 
 
@@ -68,14 +68,14 @@ def main():
     hive_column = HiveColumnManager(atlas_client)
 
     # test hive db operation
-    # hive_db_creation_test(hive_db)
+    hive_db_creation_test(hive_db)
     # hive_db_deletion_test(hive_db)
     # hive_db_purge_test(hive_db)
 
     # test hive table operation
-    # hive_table_creation_test(hive_table)
-    hive_table_deletion_test(hive_table)
-    hive_table_purge_test(hive_table)
+    hive_table_creation_test(hive_table)
+    # hive_table_deletion_test(hive_table)
+    # hive_table_purge_test(hive_table)
 
     # test hive column operation
     # hive_column_creation_test(hive_column)
