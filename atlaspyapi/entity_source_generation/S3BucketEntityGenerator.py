@@ -44,8 +44,10 @@ class S3BucketEntityGenerator:
 
     @staticmethod
     def generate_s3_bucket_json_source(
-            name: str, domain: str, qualified_name: str, description: str, **kwargs
+            name: str, domain: str, description: str, **kwargs
     ):
+        # build qualified_name
+        qualified_name = f"s3a://{domain}/{name}"
         # get s3_bucket default type
         entity_type = S3BucketEntityGenerator.config.get("aws_s3_bucket", "entity_type")
         # need to be modified
